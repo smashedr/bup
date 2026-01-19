@@ -1,0 +1,10 @@
+.idea/
+*.iml
+.vscode/
+dist/
+node_modules/
+eslint_report.json
+.env
+.secrets
+.vars
+settings.env
