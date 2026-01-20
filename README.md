@@ -1,6 +1,9 @@
+[![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/bup?logo=github)](https://github.com/smashedr/bup/releases)
+[![GitHub Downloads](https://img.shields.io/github/downloads/smashedr/bup/total?logo=rolldown&logoColor=white)](https://github.com/smashedr/bup/releases/latest)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/smashedr/bup?logo=go&logoColor=white)](https://github.com/smashedr/bup/blob/master/go.mod)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/smashedr/bup/release.yaml?logo=testcafe&logoColor=white&label=release)](https://github.com/smashedr/bup/actions/workflows/release.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/smashedr/bup/lint.yaml?logo=testcafe&logoColor=white&label=lint)](https://github.com/smashedr/bup/actions/workflows/lint.yaml)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/smashedr/bup?logo=speedtest&label=updated)](https://github.com/smashedr/bup)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/smashedr/bup?logo=speedtest&label=updated)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/smashedr/bup?logo=buffer&label=repo%20size)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/smashedr/bup?logo=devbox)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Contributors](https://img.shields.io/github/contributors-anon/smashedr/bup?logo=southwestairlines)](https://github.com/smashedr/bup/graphs/contributors)
@@ -14,6 +17,7 @@
 
 # BackUP
 
+- [Install](#install)
 - [Development](#development)
 - [Contributing](#contributing)
 
@@ -25,6 +29,26 @@ in a sub-folder with the `name` of the `source` directory and a timestamped file
 Remembers your `destination` directory and uses the current directory as `source` by default.
 
 Supports directory excludes stored in the config file with the saved destination.
+
+## Install
+
+```shell
+curl https://i.jpillora.com/smashedr/bup! | bash
+```
+
+## Usage
+
+Specify `source` and `destination`.
+
+```shell
+bup backup [source] [destination]
+```
+
+Use `b` alias, `cwd` for source, and saved `destination`.
+
+```shell
+bup b
+```
 
 # Development
 
