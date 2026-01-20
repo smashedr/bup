@@ -66,6 +66,16 @@ jobs:
           echo "artifacts: ${{ env.artifacts }}"
           echo "metadata: ${{ env.metadata }}"
 
+      - name: "VirusTotal"
+        uses: cssnr/virustotal-action@v1
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          rate_limit: 4
+          update_release: true
+          release_heading: "🛡️ **VirusTotal Results:**"
+          summary: true
+          collapsed: true
+
       - name: "Cleanup Release"
         if: ${{ failure() }}
         env:

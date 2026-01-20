@@ -44,7 +44,6 @@ dockers_v2:
     tags:
       - "latest"
       - "{{ .Version }}"
-
     labels:
       "org.opencontainers.image.description": "Back UP CLI written in Go."
       "org.opencontainers.image.created": "{{ .Date }}"
@@ -64,17 +63,12 @@ brews:
     description: "Back UP CLI written in Go."
     license: "MIT"
 
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
+#changelog:
+#  sort: asc
+#  filters:
+#    exclude:
+#      - "^docs:"
+#      - "^test:"
 
-release:
-  mode: prepend
-  footer: >-
-
-    ---
-
-    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
+#release:
+#  mode: prepend

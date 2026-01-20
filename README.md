@@ -58,6 +58,12 @@ brew install smashedr/test/bup
 docker run --rm ghcr.io/smashedr/bup:latest
 ```
 
+#### Source
+
+```shell
+go install github.com/smashedr/bup@latest
+```
+
 ## Usage
 
 - Specify `source` and `destination`
@@ -110,12 +116,6 @@ excludes: [.cache .venv build dist node_modules venv]
 ```
 
 </details>
-
-- Using Go from source
-
-```shell
-go install github.com/smashedr/bup@latest
-```
 
 # Development
 

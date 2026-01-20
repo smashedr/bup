@@ -185,10 +185,14 @@ var backupCmd = &cobra.Command{
 
 		//viper.SetDefault("destination", destination)
 		//viper.WriteConfig()
-		if viper.GetString("destination") != destPath {
+		if viper.GetString("destination") == "" {
 			viper.Set("destination", destPath)
-			viper.WriteConfig()
-			fmt.Printf("Saved Default Destination: %s\n", destPath)
+			err := viper.WriteConfig()
+			if err != nil {
+				fmt.Printf("Error Saving Config: %s\n", err)
+			} else {
+				fmt.Printf("Saved Default Destination: %s\n", destPath)
+			}
 		}
 
 		fmt.Printf("Source: %s\n", sourcePath)
@@ -213,7 +217,7 @@ var backupCmd = &cobra.Command{
 		fmt.Printf("Directory: %s\n", fullDestPath)
 
 		if err := createZipArchive(sourcePath, fullDestPath); err != nil {
-			fmt.Fprintf(os.Stderr, "Error creating archive: %v\n", err)
+			fmt.Printf("Error creating archive: %v\n", err)
 			os.Exit(1)
 		}
 		fmt.Printf("Success!\n")
