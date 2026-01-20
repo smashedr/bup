@@ -25,6 +25,11 @@ jobs:
           owner: smashedr
           repositories: "bup,homebrew-test"
 
+      - name: "Setup Buildx"
+        uses: docker/setup-buildx-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+
       - name: "GoReleaser"
         uses: goreleaser/goreleaser-action@v6
         env:
