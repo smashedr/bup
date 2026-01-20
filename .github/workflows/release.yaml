@@ -68,6 +68,7 @@ jobs:
 
       - name: "VirusTotal"
         uses: cssnr/virustotal-action@v1
+        continue-on-error: true
         with:
           vt_api_key: ${{ secrets.VT_API_KEY }}
           rate_limit: 4
