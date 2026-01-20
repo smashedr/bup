@@ -14,12 +14,12 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Set up Go"
+      - name: "Setup Go"
         uses: actions/setup-go@v5
         with:
           go-version: stable
 
-      - name: "Run GoReleaser"
+      - name: "GoReleaser"
         uses: goreleaser/goreleaser-action@v6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

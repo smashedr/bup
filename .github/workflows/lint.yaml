@@ -41,7 +41,7 @@ jobs:
         continue-on-error: true
         run: env
 
-      - name: "Set up Go"
+      - name: "Setup Go"
         uses: actions/setup-go@v5
         with:
           go-version: stable

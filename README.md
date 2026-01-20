@@ -1,6 +1,6 @@
 [![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/bup?logo=github)](https://github.com/smashedr/bup/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/smashedr/bup/total?logo=rolldown&logoColor=white)](https://github.com/smashedr/bup/releases/latest)
-[![Go Version](https://img.shields.io/github/go-mod/go-version/smashedr/bup?logo=go&logoColor=white)](https://github.com/smashedr/bup/blob/master/go.mod)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/smashedr/bup?logo=go&logoColor=white&label=go)](https://github.com/smashedr/bup/blob/master/go.mod)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/smashedr/bup/release.yaml?logo=testcafe&logoColor=white&label=release)](https://github.com/smashedr/bup/actions/workflows/release.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/smashedr/bup/lint.yaml?logo=testcafe&logoColor=white&label=lint)](https://github.com/smashedr/bup/actions/workflows/lint.yaml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/smashedr/bup?logo=speedtest&label=updated)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
@@ -18,6 +18,7 @@
 # BackUP
 
 - [Install](#install)
+- [Usage](#usage)
 - [Development](#development)
 - [Contributing](#contributing)
 
@@ -36,6 +37,8 @@ Supports directory excludes stored in the config file with the saved destination
 curl https://i.jpillora.com/smashedr/bup! | bash
 ```
 
+Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
+
 ## Usage
 
 Specify `source` and `destination`.
@@ -44,13 +47,15 @@ Specify `source` and `destination`.
 bup backup [source] [destination]
 ```
 
-Use `b` alias, `cwd` for source, and saved `destination`.
+Use the `b` alias, `$(cwd)` for source, and the saved `destination`.
 
 ```shell
 bup b
 ```
 
 # Development
+
+Go: <https://go.dev/doc/install>
 
 ```shell
 go run main.go

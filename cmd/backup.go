@@ -35,6 +35,7 @@ func createZipArchive(source, destination string) error {
 	}
 	fmt.Printf("Excludes: %v\n", excludeList)
 
+	// BEWARE AI RETARDED
 	// Create timestamp filename
 	timestamp := time.Now().Format("06-01-02-15-04-05") // YY-MM-DD-HH-MM-SS
 	zipFilename := filepath.Join(destination, timestamp+".zip")
@@ -211,7 +212,6 @@ var backupCmd = &cobra.Command{
 		}
 		fmt.Printf("Directory: %s\n", fullDestPath)
 
-		// Create the archive - AI RETARDED BEWARE RETARDED RETARDED RETARDED
 		if err := createZipArchive(sourcePath, fullDestPath); err != nil {
 			fmt.Fprintf(os.Stderr, "Error creating archive: %v\n", err)
 			os.Exit(1)
