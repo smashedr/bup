@@ -1,0 +1,4 @@
+FROM scratch
+ARG TARGETPLATFORM
+ENTRYPOINT ["/usr/bin/bup"]
+COPY $TARGETPLATFORM/bup /usr/bin/
