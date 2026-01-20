@@ -46,7 +46,7 @@ func init() {
 }
 
 func initConfig() {
-	fmt.Printf("initConfig: cfgFile: %s\n", cfgFile)
+	//fmt.Printf("initConfig: cfgFile: %s\n", cfgFile)
 	//viper.SetEnvPrefix("bup")
 
 	// Set default excluded directories
@@ -97,5 +97,5 @@ func initConfig() {
 			viper.ReadInConfig()
 		}
 	}
-	fmt.Printf("Using Config File: %s\n", viper.ConfigFileUsed())
+	fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
 }

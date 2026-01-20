@@ -23,10 +23,11 @@
 - [Development](#development)
 - [Contributing](#contributing)
 
+Back UP `bup` CLI written in Go.
+
 [![Homebrew](https://img.shields.io/badge/brew_install-smashedr%2Ftest%2Fbup-blue?style=flat-square&logo=homebrew)](#homebrew)
 [![Docker](https://img.shields.io/badge/docker_run-ghcr.io%2Fsmashedr%2Fbup-blue?style=flat-square&logo=docker)](#docker)
-
-Back UP `bup` CLI written in Go.
+[![GitHub](https://img.shields.io/badge/curl_--L-i.jpillora.com%2Fsmashedr%2Fbup!-blue?style=flat-square&logo=github)](#github)
 
 Creates an archive of the `source` directory and puts it in the `destination` directory
 in a sub-folder with the `name` of the `source` directory and a timestamped filename.
@@ -59,17 +60,56 @@ docker run --rm ghcr.io/smashedr/bup:latest
 
 ## Usage
 
-Specify `source` and `destination`.
+- Specify `source` and `destination`
 
 ```shell
 bup backup [source] [destination]
 ```
 
-Use the `b` alias, `$(cwd)` for source, and the saved `destination`.
+- Use the `b` alias, `$(cwd)` source, and saved `destination`
 
 ```shell
 bup b
 ```
+
+<details><summary>📟 View Command Output</summary>
+
+```text
+PS C:\Users\Shane\IdeaProjects\django-vue> bup b
+Config File: C:\Users\Shane\.config\bup.yaml
+Enter Destination Path: C:\Users\Shane\Backup
+Saved Default Destination: C:\Users\Shane\Backup
+Source: C:\Users\Shane\IdeaProjects\django-vue
+Destination: C:\Users\Shane\Backup
+Name: django-vue
+Proceed? (y/N): y
+Directory: C:\Users\Shane\Backup\django-vue
+Excludes: [.cache .venv build dist node_modules venv]
+Archive: C:\Users\Shane\Backup\django-vue\26-01-19-20-48-20.zip
+Success!
+```
+
+</details>
+
+- The `list` command is INOP but prints the configuration
+
+```shell
+bup l
+```
+
+<details><summary>📟 View Command Output</summary>
+
+```text
+PS C:\Users\Shane\IdeaProjects\django-vue> bup l
+Config File: C:\Users\Shane\.config\bup.yaml
+args: []
+cfgFile:
+destination: C:\Users\Shane\Backup
+excludes: [.cache .venv build dist node_modules venv]
+ - List Command INOP
+```
+
+</details>
 
 # Development
 
