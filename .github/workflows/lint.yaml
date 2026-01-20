@@ -18,6 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
+    permissions:
+      contents: read
+      pull-requests: read
+      checks: write
+
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6
@@ -41,7 +46,7 @@ jobs:
 
       - name: "golangci-lint"
         if: ${{ !cancelled() }}
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v9
         with:
           version: latest
 
