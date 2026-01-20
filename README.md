@@ -1,5 +1,6 @@
 [![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/bup?logo=github)](https://github.com/smashedr/bup/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/smashedr/bup/total?logo=rolldown&logoColor=white)](https://github.com/smashedr/bup/releases/latest)
+[![Image Size](https://badges.cssnr.com/ghcr/size/smashedr/bup)](https://github.com/smashedr/bup/pkgs/container/bup)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/smashedr/bup?logo=go&logoColor=white&label=go)](https://github.com/smashedr/bup/blob/master/go.mod)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/smashedr/bup/release.yaml?logo=testcafe&logoColor=white&label=release)](https://github.com/smashedr/bup/actions/workflows/release.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/smashedr/bup/lint.yaml?logo=testcafe&logoColor=white&label=lint)](https://github.com/smashedr/bup/actions/workflows/lint.yaml)
@@ -22,6 +23,9 @@
 - [Development](#development)
 - [Contributing](#contributing)
 
+[![Homebrew](https://img.shields.io/badge/brew_install-smashedr%2Ftest%2Fbup-blue?style=flat-square&logo=homebrew)](#homebrew)
+[![Docker](https://img.shields.io/badge/docker_run-ghcr.io%2Fsmashedr%2Fbup-blue?style=flat-square&logo=docker)](#docker)
+
 Back UP `bup` CLI written in Go.
 
 Creates an archive of the `source` directory and puts it in the `destination` directory
@@ -33,11 +37,25 @@ Supports directory excludes stored in the config file with the saved destination
 
 ## Install
 
+#### GitHub
+
 ```shell
 curl https://i.jpillora.com/smashedr/bup! | bash
 ```
 
 Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
+
+#### Homebrew
+
+```shell
+brew install smashedr/test/bup
+```
+
+#### Docker
+
+```shell
+docker run --rm ghcr.io/smashedr/bup:latest
+```
 
 ## Usage
 

@@ -64,16 +64,16 @@ brews:
     description: "Back UP CLI written in Go."
     license: "MIT"
 
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - "^docs:"
-      - "^test:"
+#changelog:
+#  sort: asc
+#  filters:
+#    exclude:
+#      - "^docs:"
+#      - "^test:"
 
-release:
-  footer: >-
-
-    ---
-
-    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
+#release:
+#  footer: >-
+#
+#    ---
+#
+#    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
