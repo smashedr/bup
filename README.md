@@ -111,6 +111,12 @@ excludes: [.cache .venv build dist node_modules venv]
 
 </details>
 
+- Using Go from source
+
+```shell
+go install github.com/smashedr/bup@latest
+```
+
 # Development
 
 Go: <https://go.dev/doc/install>

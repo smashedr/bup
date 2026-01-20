@@ -1,4 +1,4 @@
-module bup
+module github.com/smashedr/bup
 
 go 1.25.6
 
