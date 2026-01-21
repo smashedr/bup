@@ -134,10 +134,8 @@ go run main.go
 Docs: <https://zensical.org/docs/get-started>
 
 ```shell
-zensical serve
+zensical serve --open
 ```
-
-Visit: <http://localhost:8000>
 
 # Contributing
 

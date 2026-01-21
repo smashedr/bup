@@ -24,7 +24,7 @@ icon: lucide/rocket
 
 Back UP `bup` CLI written in Go.
 
-To get started see the [Quick Start](#quick-start) section or check out the [Features](#features).
+--8<-- "docs/snippets/install.md"
 
 Creates an archive of the `source` directory and puts it in the `destination` directory
 in a sub-folder with the `name` of the `source` directory and a timestamped filename.
@@ -32,6 +32,8 @@ in a sub-folder with the `name` of the `source` directory and a timestamped file
 Remembers your `destination` directory and uses the current directory as `source` by default.
 
 Supports directory excludes stored in the config file with the saved destination.
+
+To get started see the [Quick Start](#quick-start) section or check out the [Features](#features).
 
 If you run into any issues or have any questions, [support](support.md) is available.
 
@@ -48,31 +50,7 @@ If you run into any issues or have any questions, [support](support.md) is avail
 
 Install.
 
-=== "brew"
-
-    ```shell
-    brew install smashedr/test/bup
-    ```
-
-=== "github"
-
-    ```shell
-    curl https://i.jpillora.com/smashedr/bup! | bash  # (1)!
-    ```
-
-    1.  Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases/latest).
-
-=== "docker"
-
-    ```shell
-    docker run --rm ghcr.io/smashedr/bup:latest
-    ```
-
-=== "source"
-
-    ```shell
-    go install github.com/smashedr/bup@latest
-    ```
+--8<-- "docs/snippets/install.md"
 
 Usage.
 
