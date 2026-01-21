@@ -2,6 +2,8 @@
 [![GitHub Downloads](https://img.shields.io/github/downloads/smashedr/bup/total?logo=rolldown&logoColor=white)](https://github.com/smashedr/bup/releases/latest)
 [![Image Size](https://badges.cssnr.com/ghcr/size/smashedr/bup)](https://github.com/smashedr/bup/pkgs/container/bup)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/smashedr/bup?logo=go&logoColor=white&label=go)](https://github.com/smashedr/bup/blob/master/go.mod)
+[![Deployment Docs](https://img.shields.io/github/deployments/smashedr/bup/docs?logo=materialformkdocs&logoColor=white&label=docs)](https://github.com/smashedr/bup/deployments/docs)
+[![Deployment Preview](https://img.shields.io/github/deployments/smashedr/bup/preview?logo=materialformkdocs&logoColor=white&label=preview)](https://github.com/smashedr/bup/deployments/preview)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/smashedr/bup/release.yaml?logo=testcafe&logoColor=white&label=release)](https://github.com/smashedr/bup/actions/workflows/release.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/smashedr/bup/lint.yaml?logo=testcafe&logoColor=white&label=lint)](https://github.com/smashedr/bup/actions/workflows/lint.yaml)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/smashedr/bup?logo=speedtest&label=updated)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
@@ -16,7 +18,7 @@
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
-# BackUP
+# Back UP
 
 [![Homebrew](https://img.shields.io/badge/brew_install-smashedr%2Ftest%2Fbup-blue?style=flat-square&logo=homebrew)](#homebrew)
 [![Docker](https://img.shields.io/badge/docker_run-ghcr.io%2Fsmashedr%2Fbup-blue?style=flat-square&logo=docker)](#docker)
@@ -35,6 +37,8 @@ in a sub-folder with the `name` of the `source` directory and a timestamped file
 Remembers your `destination` directory and uses the current directory as `source` by default.
 
 Supports directory excludes stored in the config file with the saved destination.
+
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
 
 ## Install
 
@@ -117,6 +121,8 @@ excludes: [.cache .venv build dist node_modules venv]
 
 </details>
 
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
+
 # Development
 
 Go: <https://go.dev/doc/install>
@@ -124,6 +130,14 @@ Go: <https://go.dev/doc/install>
 ```shell
 go run main.go
 ```
+
+Docs: <https://zensical.org/docs/get-started>
+
+```shell
+zensical serve
+```
+
+Visit: <http://localhost:8000>
 
 # Contributing
 
