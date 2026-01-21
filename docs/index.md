@@ -26,14 +26,14 @@ Back UP `bup` CLI written in Go.
 
 --8<-- "docs/snippets/install.md"
 
-To get started see the [Quick Start](#quick-start) section or check out the [Features](#features).
-
 Creates an archive of the `source` directory and puts it in the `destination` directory
 in a sub-folder with the `name` of the `source` directory and a timestamped filename.
 
 Remembers your `destination` directory and uses the current directory as `source` by default.
 
 Supports directory excludes stored in the config file with the saved destination.
+
+To get started see the [Quick Start](#quick-start) section or check out the [Features](#features).
 
 If you run into any issues or have any questions, [support](support.md) is available.
 
