@@ -22,7 +22,7 @@
 
 [![Homebrew](https://img.shields.io/badge/brew_install-smashedr%2Ftest%2Fbup-blue?style=flat-square&logo=homebrew)](#homebrew)
 [![Docker](https://img.shields.io/badge/docker_run-ghcr.io%2Fsmashedr%2Fbup-blue?style=flat-square&logo=docker)](#docker)
-[![GitHub](https://img.shields.io/badge/curl_--L-i.jpillora.com%2Fsmashedr%2Fbup!-blue?style=flat-square&logo=github)](#github)
+[![GitHub](https://img.shields.io/badge/curl_--L-i.jpillora.com%2Fsmashedr%2Fbup!|bash-blue?style=flat-square&logo=github)](#github)
 
 - [Install](#install)
 - [Usage](#usage)
