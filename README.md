@@ -131,6 +131,12 @@ Go: <https://go.dev/doc/install>
 go run main.go
 ```
 
+Task: <https://taskfile.dev/docs/installation>
+
+```shell
+task build
+```
+
 Docs: <https://zensical.org/docs/get-started>
 
 ```shell

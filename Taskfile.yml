@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  clean:
+    desc: Clean
+    cmds:
+      - cmd: rm -rf dist
+
+  build:
+    desc: Build
+    deps: [clean]
+    vars:
+      NAME: bup
+      PATH: dist
+    cmds:
+      - for:
+          matrix:
+            OS: [darwin, linux, windows]
+            ARCH: [amd64, arm64]
+        cmd: |
+          {{if eq .ITEM.OS "windows"}}
+          echo "Building: {{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}.exe"
+          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}.exe"
+          {{else}}
+          echo "Building: {{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
+          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
+          {{end}}
+        silent: false
+
+      - cmd: echo "Finished Success"
+        silent: false
