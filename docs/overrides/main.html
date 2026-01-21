@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block site_meta %} {{ super() }} {% set path = '/bup' %}
+
+<meta name="theme-color" content="#0B0C0F" />
+
+{#<link rel="icon" type="image/svg" sizes="any" href="{{ path }}/assets/images/logo.svg" />#}
+<link rel="icon" type="image/png" href="{{ path }}/assets/images/logo.png" />
+<link rel="apple-touch-icon" href="{{ path }}/assets/images/logo.png" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Back UP" />
+<meta property="og:site_name" content="Back UP CLI" />
+<meta property="og:description" content="Back UP CLI written in Go." />
+<meta property="og:image" content="{{ path }}/assets/images/logo.png" />
+<meta property="og:image:alt" content="Back UP" />
+
+<meta property="twitter:card" content="summary" />
+<meta property="twitter:site" content="Back UP CLI written in Go." />
+<meta property="twitter:title" content="Back UP" />
+<meta property="twitter:description" content="Back UP CLI written in Go." />
+<meta property="twitter:image" content="{{ path }}/assets/images/logo.png" />
+<meta property="twitter:image:alt" content="Back UP" />
+
+<meta name="darkreader-lock" />
+
+{% endblock %}
