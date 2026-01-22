@@ -31,11 +31,13 @@ ArchitecturesInstallIn64BitMode=x64compatible
 ;LicenseFile=LICENSE
 ; Remove the following line to run in administrative install mode (install for all users).
 PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=commandline
+PrivilegesRequiredOverridesAllowed=commandline dialog
 SetupIconFile=docs\favicon.ico
 SolidCompression=yes
-WizardStyle=modern dynamic
 ;Compression=lzma
+WizardStyle=modern dynamic
+DisableFinishedPage=yes
+;VersionInfoVersion={#MyAppVersion}
 
 OutputBaseFilename=bup_Windows_Installer
 OutputDir=out
