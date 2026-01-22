@@ -4,15 +4,14 @@ on:
   release:
     types: [published]
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: "Build"
     runs-on: ubuntu-latest
     timeout-minutes: 15
-
-    permissions:
-      contents: write
-      packages: write
 
     steps:
       - name: "Checkout"
@@ -29,16 +28,13 @@ jobs:
           owner: smashedr
           repositories: "bup,homebrew-test"
 
-      # Note: app tokens can not write to packages
-      #       and neither can workflow tokens with packages: write
+      # Note: app/workflow tokens can NOT write to packages with packages: write
       - name: "Docker Login"
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ vars.GHCR_USER }}
           password: ${{ secrets.GHCR_PASS }}
-          #username: ${{ github.actor }}
-          #password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Setup Buildx"
         uses: docker/setup-buildx-action@v3
@@ -81,17 +77,6 @@ jobs:
           name: bup-x86_64
           path: dist/bup_windows_amd64_v1/bup.exe
 
-      #- name: "VirusTotal"
-      #  uses: cssnr/virustotal-action@v1
-      #  continue-on-error: true
-      #  with:
-      #    vt_api_key: ${{ secrets.VT_API_KEY }}
-      #    rate_limit: 4
-      #    update_release: true
-      #    release_heading: "🛡️ **VirusTotal Results:**"
-      #    summary: true
-      #    collapsed: true
-
       - name: "Cleanup Release"
         if: ${{ failure() }}
         env:
@@ -128,7 +113,7 @@ jobs:
           path: dist/x86_64
 
       - name: "Download PathMgr"
-        uses: robinraju/release-downloader@v1.10
+        uses: robinraju/release-downloader@daf26c55d821e836577a15f77d86ddc078948b05 # v1.12
         with:
           repository: "Bill-Stewart/PathMgr"
           fileName: "PathMgr-2.0.0.zip"
@@ -142,7 +127,6 @@ jobs:
           ls -lAhR dist
 
       - name: "Inno Setup"
-        #shell: bash
         run: |
           echo "Building Version: ${{ github.ref_name }}"
           iscc.exe /DMyAppVersion=${{ github.ref_name }} installer.iss
