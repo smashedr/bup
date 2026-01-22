@@ -6,10 +6,19 @@ vars:
   PATH: dist
 
 tasks:
+  docs:
+    desc: Zensical Docs
+    cmd: |
+      rm -rf .cache
+      zensical serve --open
+
+  setup:
+    desc: Inno Setup
+    cmd: iscc.exe installer.iss
+
   clean:
     desc: Clean
-    cmds:
-      - cmd: rm -rf dist
+    cmd: rm -rf {{.PATH}}
 
   build:
     desc: Build All

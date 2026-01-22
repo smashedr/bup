@@ -54,6 +54,7 @@ brew install smashedr/test/bup
 curl https://i.jpillora.com/smashedr/bup! | bash
 ```
 
+Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).  
 Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
 
 #### Docker
@@ -76,7 +77,7 @@ go install github.com/smashedr/bup@latest
 bup backup [source] [destination]
 ```
 
-- Use the `b` alias, `$(cwd)` source, and saved `destination`
+- Use the `b` alias, `$pwd` source, and saved `destination`
 
 ```shell
 bup b
@@ -135,12 +136,24 @@ Task: <https://taskfile.dev/docs/installation>
 
 ```shell
 task build
+task build:windows
+task build:windows:amd64
 ```
 
 Docs: <https://zensical.org/docs/get-started>
 
 ```shell
 zensical serve --open
+# or
+task docs
+```
+
+Inno Setup: <https://jrsoftware.org/isdl.php>
+
+```shell
+iscc.exe installer.iss
+# or
+task setup
 ```
 
 # Contributing

@@ -60,7 +60,7 @@ Usage.
 bup backup [source] [destination]
 ```
 
-- Use the `b` alias, `$(cwd)` source, and saved `destination`
+- Use the `b` alias, `$pwd` source, and saved `destination`
 
 ```shell
 bup b
