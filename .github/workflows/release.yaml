@@ -93,7 +93,7 @@ jobs:
           path: dist/bup_windows_amd64_v1/bup.exe
 
       - name: "Homebrew Action"
-        #if: ${{ !github.event.release.prerelease }} # TODO: DEBUGGING
+        #if: ${{ !github.event.release.prerelease }}
         uses: cssnr/homebrew-action@file
         with:
           file: dist/homebrew/Formula/bup.rb
