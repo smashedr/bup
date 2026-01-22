@@ -62,6 +62,7 @@ brews:
     homepage: "https://github.com/smashedr/{{ .ProjectName }}"
     description: "Back UP CLI written in Go."
     license: "MIT"
+    skip_upload: true
 
 #changelog:
 #  sort: asc

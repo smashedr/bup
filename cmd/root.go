@@ -9,19 +9,22 @@ import (
 )
 
 var (
-	version = "0.0.1"
 	cfgFile string
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:     "bup",
-	Short:   "Easily backup directories to destination with excludes.",
-	Long:    "Easily create a timestamped archive of the current directory to a destination with excludes.",
-	Version: version,
+	Use:   "bup",
+	Short: "Easily backup directories to destination with excludes.",
+	Long:  "Easily create a timestamped archive of the current directory to a destination with excludes.",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
+}
+
+func SetVersionInfo(version, commit, date string) {
+	// https://www.jvt.me/posts/2023/02/27/go-cobra-goreleaser-version/
+	rootCmd.Version = fmt.Sprintf("%s (Built on %s from SHA %s)", version, date, commit)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
