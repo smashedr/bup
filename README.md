@@ -42,6 +42,12 @@ Supports directory excludes stored in the config file with the saved destination
 
 ## Install
 
+#### Homebrew
+
+```shell
+brew install smashedr/test/bup
+```
+
 #### GitHub
 
 ```shell
@@ -49,12 +55,6 @@ curl https://i.jpillora.com/smashedr/bup! | bash
 ```
 
 Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
-
-#### Homebrew
-
-```shell
-brew install smashedr/test/bup
-```
 
 #### Docker
 
