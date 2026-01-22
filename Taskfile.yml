@@ -1,6 +1,10 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
+vars:
+  NAME: bup
+  PATH: dist
+
 tasks:
   clean:
     desc: Clean
@@ -8,11 +12,8 @@ tasks:
       - cmd: rm -rf dist
 
   build:
-    desc: Build
+    desc: Build All
     deps: [clean]
-    vars:
-      NAME: bup
-      PATH: dist
     cmds:
       - for:
           matrix:
@@ -30,3 +31,43 @@ tasks:
 
       - cmd: echo "Finished Success"
         silent: false
+
+  build:*:*:
+    desc: Build OS:ARCH
+    deps: [clean]
+    vars:
+      OS: "{{index .MATCH 0}}"
+      ARCH: "{{index .MATCH 1}}"
+    requires:
+      vars:
+        - name: OS
+          enum: [darwin, linux, windows]
+        - name: ARCH
+          enum: [amd64, arm64]
+    cmd: |
+      {{if eq .OS "windows"}}
+      echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
+      #GOOS={{.OS}} GOARCH={{.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
+      {{else}}
+      echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+      #GOOS={{.OS}} GOARCH={{.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+      {{end}}
+
+  build:*:
+    desc: Build OS
+    deps: [clean]
+    vars:
+      OS: "{{index .MATCH 0}}"
+      ARCH: "amd64"
+    requires:
+      vars:
+        - name: OS
+          enum: [darwin, linux, windows]
+    cmd: |
+      {{if eq .OS "windows"}}
+      echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
+      #GOOS={{.OS}} GOARCH={{.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
+      {{else}}
+      echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+      #GOOS={{.OS}} GOARCH={{.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+      {{end}}

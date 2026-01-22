@@ -11,7 +11,7 @@
 [![GitHub Top Language](https://img.shields.io/github/languages/top/smashedr/bup?logo=devbox)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Contributors](https://img.shields.io/github/contributors-anon/smashedr/bup?logo=southwestairlines)](https://github.com/smashedr/bup/graphs/contributors)
 [![GitHub Issues](https://img.shields.io/github/issues/smashedr/bup?logo=codeforces&logoColor=white)](https://github.com/smashedr/bup/issues)
-[![GitHub Discussions](https://img.shields.io/github/discussions/smashedr/bup?logo=rocketdotchat&logoColor=white)](https://github.com/smashedr/bup/discussions)
+[![GitHub Discussions](https://img.shields.io/github/discussions/smashedr/bup?logo=theconversation)](https://github.com/smashedr/bup/discussions)
 [![GitHub Forks](https://img.shields.io/github/forks/smashedr/bup?style=flat&logo=forgejo&logoColor=white)](https://github.com/smashedr/bup/forks)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/smashedr/bup?style=flat&logo=gleam&logoColor=white)](https://github.com/smashedr/bup/stargazers)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=apachespark&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
@@ -42,6 +42,12 @@ Supports directory excludes stored in the config file with the saved destination
 
 ## Install
 
+#### Homebrew
+
+```shell
+brew install smashedr/test/bup
+```
+
 #### GitHub
 
 ```shell
@@ -49,12 +55,6 @@ curl https://i.jpillora.com/smashedr/bup! | bash
 ```
 
 Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
-
-#### Homebrew
-
-```shell
-brew install smashedr/test/bup
-```
 
 #### Docker
 
