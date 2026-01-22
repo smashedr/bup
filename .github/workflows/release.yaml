@@ -59,7 +59,7 @@ jobs:
           version: "~> v2"
           args: release --clean
 
-      - name: "Debug"
+      - name: "Debug GoReleaser"
         continue-on-error: true
         env:
           artifacts: ${{ steps.go.outputs.artifacts }}
@@ -68,16 +68,28 @@ jobs:
           echo "artifacts: ${{ env.artifacts }}"
           echo "metadata: ${{ env.metadata }}"
 
-      - name: "VirusTotal"
-        uses: cssnr/virustotal-action@v1
-        continue-on-error: true
+      - name: "Upload i386 to Actions"
+        uses: actions/upload-artifact@v6
         with:
-          vt_api_key: ${{ secrets.VT_API_KEY }}
-          rate_limit: 4
-          update_release: true
-          release_heading: "🛡️ **VirusTotal Results:**"
-          summary: true
-          collapsed: true
+          name: bup-i386
+          path: dist/bup_windows_386_sse2/bup.exe
+
+      - name: "Upload x86_64 to Actions"
+        uses: actions/upload-artifact@v6
+        with:
+          name: bup-x86_64
+          path: dist/bup_windows_amd64_v1/bup.exe
+
+      #- name: "VirusTotal"
+      #  uses: cssnr/virustotal-action@v1
+      #  continue-on-error: true
+      #  with:
+      #    vt_api_key: ${{ secrets.VT_API_KEY }}
+      #    rate_limit: 4
+      #    update_release: true
+      #    release_heading: "🛡️ **VirusTotal Results:**"
+      #    summary: true
+      #    collapsed: true
 
       - name: "Cleanup Release"
         if: ${{ failure() }}
@@ -91,3 +103,77 @@ jobs:
           else
             echo -e "⛔ Cleanup Failed!\n" >> "$GITHUB_STEP_SUMMARY"
           fi
+
+  windows:
+    name: "Windows Installer"
+    runs-on: windows-latest
+    timeout-minutes: 15
+    needs: [release]
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6
+
+      - name: "Download i386 Artifact"
+        uses: actions/download-artifact@v7
+        with:
+          name: bup-i386
+          path: dist/i386
+
+      - name: "Download x86_64 Artifact"
+        uses: actions/download-artifact@v7
+        with:
+          name: bup-x86_64
+          path: dist/x86_64
+
+      - name: "Download PathMgr"
+        uses: robinraju/release-downloader@v1.10
+        with:
+          repository: "Bill-Stewart/PathMgr"
+          fileName: "PathMgr-2.0.0.zip"
+          out-file-path: "dist/PathMgr"
+          tag: "v2.0.0"
+          extract: true
+
+      - name: "Debug Artifacts"
+        shell: bash
+        run: |
+          ls -lAhR dist
+
+      - name: "Inno Setup"
+        #shell: bash
+        run: |
+          echo "Building Version: ${{ github.ref_name }}"
+          iscc.exe /DMyAppVersion=${{ github.ref_name }} installer.iss
+
+      - name: "Debug Inno"
+        shell: bash
+        run: |
+          ls -lAhR out
+
+      - name: "Upload to Actions"
+        uses: actions/upload-artifact@v6
+        with:
+          name: installer
+          path: out
+
+      - name: "Upload Release"
+        if: ${{ github.event_name == 'release' }}
+        uses: cssnr/upload-release-action@v1
+        with:
+          globs: out/*
+
+  virustotal:
+    name: "VirusTotal Scan"
+    runs-on: ubuntu-latest
+    needs: [windows]
+    timeout-minutes: 5
+    if: ${{ github.event_name == 'release' }}
+
+    steps:
+      - name: "VirusTotal"
+        uses: cssnr/virustotal-action@master
+        continue-on-error: true
+        with:
+          vt_api_key: ${{ secrets.VT_API_KEY }}
+          collapsed: true
