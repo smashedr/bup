@@ -9,14 +9,16 @@ import (
 )
 
 var (
+	version = "0.0.1"
 	cfgFile string
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "bup",
-	Short: "Easily backup directories to destination with excludes.",
-	Long:  "Easily create a timestamped archive of the current directory to a destination with excludes.",
+	Use:     "bup",
+	Short:   "Easily backup directories to destination with excludes.",
+	Long:    "Easily create a timestamped archive of the current directory to a destination with excludes.",
+	Version: version,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
