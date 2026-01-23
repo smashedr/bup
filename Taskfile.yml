@@ -50,13 +50,10 @@ tasks:
             OS: [darwin, linux, windows]
             ARCH: [amd64, arm64]
         cmd: |
-          {{if eq .ITEM.OS "windows"}}
-          echo "Building: {{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}.exe"
-          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}.exe"
-          {{else}}
-          echo "Building: {{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
-          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
-          {{end}}
+          OUTPUT="{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
+          {{if eq .ITEM.OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
+          echo "Building: ${OUTPUT}"
+          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
         silent: false
 
       - cmd: echo "Finished Success"
@@ -75,13 +72,10 @@ tasks:
         - name: ARCH
           enum: [amd64, arm64, "386"]
     cmd: |
-      {{if eq .OS "windows"}}
-      echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
-      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
-      {{else}}
-      echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-      {{end}}
+      OUTPUT="{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+      {{if eq .OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
+      echo "Building: ${OUTPUT}"
+      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
 
   build:*:
     desc: Build OS
@@ -94,10 +88,7 @@ tasks:
         - name: OS
           enum: [darwin, linux, windows]
     cmd: |
-      {{if eq .OS "windows"}}
-      echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
-      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
-      {{else}}
-      echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-      {{end}}
+      OUTPUT="{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+      {{if eq .OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
+      echo "Building: ${OUTPUT}"
+      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
