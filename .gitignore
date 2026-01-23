@@ -1,8 +1,11 @@
+# Generic
 .idea/
 *.iml
 .vscode/
-dist/
+.*cache*
 node_modules/
-.cache
+build/
+dist/
 out/
+# App
 site/

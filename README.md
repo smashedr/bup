@@ -6,7 +6,7 @@
 [![Deployment Preview](https://img.shields.io/github/deployments/smashedr/bup/preview?logo=materialformkdocs&logoColor=white&label=preview)](https://github.com/smashedr/bup/deployments/preview)
 [![Workflow Release](https://img.shields.io/github/actions/workflow/status/smashedr/bup/release.yaml?logo=testcafe&logoColor=white&label=release)](https://github.com/smashedr/bup/actions/workflows/release.yaml)
 [![Workflow Lint](https://img.shields.io/github/actions/workflow/status/smashedr/bup/lint.yaml?logo=testcafe&logoColor=white&label=lint)](https://github.com/smashedr/bup/actions/workflows/lint.yaml)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/smashedr/bup?logo=listenhub&label=updated)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/smashedr/bup?logo=listenhub&label=updated)](https://github.com/smashedr/pulse)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/smashedr/bup?logo=buffer&label=repo%20size)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/smashedr/bup?logo=devbox)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Contributors](https://img.shields.io/github/contributors-anon/smashedr/bup?logo=southwestairlines)](https://github.com/smashedr/bup/graphs/contributors)

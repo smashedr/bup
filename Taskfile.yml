@@ -4,6 +4,10 @@ version: "3"
 vars:
   NAME: bup
   PATH: dist
+  ARGS: "-ldflags='-s -w'"
+
+env:
+  CGO_ENABLED: 0
 
 tasks:
   docs:
@@ -12,7 +16,24 @@ tasks:
       rm -rf .cache
       zensical serve --open
 
-  setup:
+  pathmgr:
+    desc: Download PathMgr
+    cmd: |
+      wget https://github.com/Bill-Stewart/PathMgr/releases/download/v2.0.0/PathMgr-2.0.0.zip
+      unzip dist/pathmgr.zip -d dist/PathMgr
+
+  prepare:
+    desc: Prep Inno
+    cmd: |
+      task build:windows:386
+      task build:windows:amd64
+      mkdir -p dist/i386
+      mkdir -p dist/x86_64
+      cp -f dist/bup-windows-amd64.exe dist/i386/bup.exe
+      cp -f dist/bup-windows-amd64.exe dist/x86_64/bup.exe
+
+  inno:
+    aliases: [setup]
     desc: Inno Setup
     cmd: iscc.exe installer.iss
 
@@ -22,7 +43,7 @@ tasks:
 
   build:
     desc: Build All
-    deps: [clean]
+    #deps: [clean]
     cmds:
       - for:
           matrix:
@@ -31,10 +52,10 @@ tasks:
         cmd: |
           {{if eq .ITEM.OS "windows"}}
           echo "Building: {{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}.exe"
-          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}.exe"
+          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}.exe"
           {{else}}
           echo "Building: {{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
-          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
+          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
           {{end}}
         silent: false
 
@@ -43,7 +64,7 @@ tasks:
 
   build:*:*:
     desc: Build OS:ARCH
-    deps: [clean]
+    #deps: [clean]
     vars:
       OS: "{{index .MATCH 0}}"
       ARCH: "{{index .MATCH 1}}"
@@ -52,19 +73,19 @@ tasks:
         - name: OS
           enum: [darwin, linux, windows]
         - name: ARCH
-          enum: [amd64, arm64]
+          enum: [amd64, arm64, "386"]
     cmd: |
       {{if eq .OS "windows"}}
       echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
-      #GOOS={{.OS}} GOARCH={{.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
+      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
       {{else}}
       echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-      #GOOS={{.OS}} GOARCH={{.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
       {{end}}
 
   build:*:
     desc: Build OS
-    deps: [clean]
+    #deps: [clean]
     vars:
       OS: "{{index .MATCH 0}}"
       ARCH: "amd64"
@@ -75,8 +96,8 @@ tasks:
     cmd: |
       {{if eq .OS "windows"}}
       echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
-      #GOOS={{.OS}} GOARCH={{.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
+      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}.exe"
       {{else}}
       echo "Building: {{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-      #GOOS={{.OS}} GOARCH={{.ARCH}} go build -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
       {{end}}
