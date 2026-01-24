@@ -52,7 +52,8 @@ dockers_v2:
       "org.opencontainers.image.revision": "{{ .FullCommit }}"
       "org.opencontainers.image.version": "{{ .Version }}"
       "org.opencontainers.image.source": "{{ .GitURL }}"
-    disable: "{{ if or .Snapshot .Prerelease }}"
+    #disable: "{{ if or .Snapshot .Prerelease }}true{{ end }}"
+    disable: "{{ or .Snapshot .Prerelease }}"
 
 brews:
   - repository:
