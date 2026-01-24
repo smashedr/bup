@@ -42,6 +42,8 @@ jobs:
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
           owner: smashedr
           repositories: "bup,homebrew-test"
+          #owner: cssnr
+          #repositories: "homebrew-tap"
 
       # Note: app/workflow tokens can NOT write to packages with packages: write
       - name: "Docker Login"
@@ -65,7 +67,8 @@ jobs:
         id: go
         uses: goreleaser/goreleaser-action@e435ccd777264be153ace6237001ef4d979d3a7a # v6.4.0
         env:
-          GITHUB_TOKEN: ${{ steps.app.outputs.token }}
+          #GITHUB_TOKEN: ${{ steps.app.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           distribution: goreleaser
           version: "~> v2"
@@ -98,6 +101,7 @@ jobs:
         with:
           file: dist/homebrew/Formula/bup.rb
           repo: smashedr/homebrew-test
+          #repo: cssnr/homebrew-tap
           token: ${{ steps.app.outputs.token }}
 
       - name: "Cleanup Release"
@@ -148,21 +152,19 @@ jobs:
           extract: true
 
       - name: "Debug Artifacts"
-        shell: bash
         run: |
-          ls -lAhR dist
+          ls dist
 
       - name: "Inno Setup"
         run: |
           echo "Building Version: ${{ github.ref_name }}"
-          iscc.exe /DMyAppVersion=${{ github.ref_name }} installer.iss
+          iscc.exe "/DMyAppVersion=${{ github.ref_name }}" installer.iss
 
-      - name: "Debug Inno"
-        shell: bash
+      - name: "Debug Output"
         run: |
-          ls -lAhR "${{ env.output }}"
+          ls "${{ env.output }}"
 
-      - name: "Upload to Actions"
+      - name: "Upload Artifact"
         uses: actions/upload-artifact@v6
         with:
           name: installer

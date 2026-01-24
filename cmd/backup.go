@@ -12,6 +12,10 @@ import (
 	"time"
 )
 
+//var (
+//	port int
+//)
+
 //func validateDirectory(path, name string) error {
 //	info, err := os.Stat(path)
 //	if err != nil {
@@ -29,11 +33,12 @@ import (
 
 func createZipArchive(source, destination string) error {
 	excludeList := viper.GetStringSlice("excludes")
-	excludeDirs := make(map[string]bool, len(excludeList))
-	for _, dir := range excludeList {
-		excludeDirs[dir] = true
-	}
-	fmt.Printf("Excludes: %v\n", excludeList)
+	fmt.Printf("Excludes: %s\n", excludeList)
+	//excludeMap := make(map[string]bool, len(excludeList))
+	//for _, dir := range excludeList {
+	//	excludeMap[dir] = true
+	//}
+	//fmt.Printf("Excludes: %v\n", excludeList)
 
 	// BEWARE AI RETARDED
 	// Create timestamp filename
@@ -60,14 +65,31 @@ func createZipArchive(source, destination string) error {
 		if err != nil {
 			return err
 		}
+		//fmt.Printf("%s: %s\n", info.Name(), path)
 
-		// Check if current directory should be excluded
-		// CRITICAL: Must check IsDir() BEFORE returning SkipDir
+		//isExcluded := excludeMap[info.Name()]
+		isExcluded := false
+		for _, pattern := range excludeList {
+			matched, err := filepath.Match(pattern, info.Name())
+			if err != nil {
+				continue
+			}
+			if matched {
+				isExcluded = true
+				break
+			}
+		}
+
 		if info.IsDir() {
-			if excludeDirs[info.Name()] {
+			if isExcluded {
+				fmt.Printf("SkipDir: %s\n", path)
 				return filepath.SkipDir
 			}
 			// Don't add directory entries to zip, they're created automatically
+			return nil
+		}
+		if isExcluded {
+			fmt.Printf("Exclude: %s\n", path)
 			return nil
 		}
 
@@ -195,18 +217,22 @@ var backupCmd = &cobra.Command{
 			}
 		}
 
+		noConfirm, err := cmd.Flags().GetBool("yes")
+		fmt.Printf("Skip Confirmation: %v\n", noConfirm)
+
 		fmt.Printf("Source: %s\n", sourcePath)
 		fmt.Printf("Destination: %s\n", destPath)
 		fmt.Printf("Name: %s\n", sourceName)
 
-		fmt.Print("Proceed? (y/N): ")
-		var response string
-		_, _ = fmt.Scanln(&response)
-		//fmt.Printf("response: \"%s\"\n", response)
-
-		if len(response) < 1 || strings.ToUpper(response[:1]) != "Y" {
-			fmt.Println("Operation cancelled")
-			os.Exit(0)
+		if !noConfirm {
+			fmt.Print("Proceed? (y/N): ")
+			var response string
+			_, _ = fmt.Scanln(&response)
+			//fmt.Printf("response: \"%s\"\n", response)
+			if len(response) < 1 || strings.ToUpper(response[:1]) != "Y" {
+				fmt.Println("Operation cancelled")
+				os.Exit(0)
+			}
 		}
 
 		fullDestPath := filepath.Join(destPath, sourceName)
@@ -227,11 +253,14 @@ var backupCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(backupCmd)
 
+	// https://cobra.dev/docs/tutorials/customizing-cli/
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// backupCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// backupCmd.Flags().IntVarP(&port, "port", "p", 8080, "Port to run the server on")
+	backupCmd.PersistentFlags().BoolP("yes", "y", false, "Answer Yes to Confirmation")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:

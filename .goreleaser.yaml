@@ -63,6 +63,14 @@ brews:
     homepage: "https://github.com/smashedr/{{ .ProjectName }}"
     description: "Back UP CLI written in Go."
     license: "MIT"
+    test: |
+      assert_match version.to_s, shell_output("#{bin}/bup -V")
+    caveats: |
+      <<~EOF
+        View the Documentation:
+        https://smashedr.github.io/bup/
+        
+      EOF
     skip_upload: true
 
 #changelog:
