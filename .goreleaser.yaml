@@ -42,7 +42,7 @@ dockers_v2:
   - images:
       - "ghcr.io/smashedr/{{ .ProjectName }}"
     tags:
-      - "latest"
+      - "{{ if .Prerelease }}prerelease{{ else }}latest{{ end }}"
       - "{{ .Version }}"
     labels:
       "org.opencontainers.image.description": "Back UP CLI written in Go."
@@ -52,6 +52,7 @@ dockers_v2:
       "org.opencontainers.image.revision": "{{ .FullCommit }}"
       "org.opencontainers.image.version": "{{ .Version }}"
       "org.opencontainers.image.source": "{{ .GitURL }}"
+    disable: "{{ if or .Snapshot .Prerelease }}"
 
 brews:
   - repository:

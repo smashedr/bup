@@ -119,6 +119,9 @@ jobs:
     timeout-minutes: 15
     needs: [build]
 
+    env:
+      output: "out"
+
     steps:
       - name: "Checkout"
         uses: actions/checkout@v6
@@ -157,19 +160,19 @@ jobs:
       - name: "Debug Inno"
         shell: bash
         run: |
-          ls -lAhR out
+          ls -lAhR "${{ env.output }}"
 
       - name: "Upload to Actions"
         uses: actions/upload-artifact@v6
         with:
           name: installer
-          path: out
+          path: ${{ env.output }}
 
       - name: "Upload Release"
         if: ${{ github.event_name == 'release' }}
         uses: cssnr/upload-release-action@v1
         with:
-          globs: out/*
+          globs: "${{ env.output }}/*"
 
   virustotal:
     name: "VirusTotal Scan"

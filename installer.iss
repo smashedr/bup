@@ -15,9 +15,27 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
+;Compression=lzma
+;SolidCompression=yes
 DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
+;DisableDirPage=yes
+;DisableProgramGroupPage=yes
+DisableFinishedPage=yes
+InfoBeforeFile=assets\pre-install.rtf
+InfoAfterFile=assets\post-install.rtf
+
+OutputBaseFilename=bup_Windows_Installer
+OutputDir=out
+PrivilegesRequired=lowest
+PrivilegesRequiredOverridesAllowed=dialog
+SetupIconFile=docs\favicon.ico
 UninstallDisplayIcon={uninstallexe}
+WizardStyle=modern dynamic
+
+ChangesEnvironment=yes
+;LicenseFile=LICENSE
+;VersionInfoVersion={#MyAppVersion}
 
 ; "ArchitecturesAllowed=x64compatible" specifies that Setup cannot run
 ; on anything but x64 and Windows 11 on Arm.
@@ -28,38 +46,14 @@ UninstallDisplayIcon={uninstallexe}
 ; the 64-bit view of the registry.
 ArchitecturesInstallIn64BitMode=x64compatible
 
-;LicenseFile=LICENSE
-; Remove the following line to run in administrative install mode (install for all users).
-PrivilegesRequired=lowest
-PrivilegesRequiredOverridesAllowed=commandline dialog
-SetupIconFile=docs\favicon.ico
-SolidCompression=yes
-;Compression=lzma
-WizardStyle=modern dynamic
-DisableFinishedPage=yes
-;VersionInfoVersion={#MyAppVersion}
-
-OutputBaseFilename=bup_Windows_Installer
-OutputDir=out
-ChangesEnvironment=yes
-InfoBeforeFile=setup\pre-install.rtf
-InfoAfterFile=setup\post-install.rtf
-
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
+Source: "dist\PathMgr\i386\PathMgr.dll"; DestDir: "{app}"; Flags: uninsneveruninstall
 ;Source: "dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\i386\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode()
 Source: "dist\x86_64\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode()
-; Install PathMgr.dll for use with both setup and uninstall; use
-; uninsneveruninstall flag because DeinitializeSetup() will delete after
-; unloading the DLL; install the 32-bit version of PathMgr.dll because both
-; setup and uninstall executables are 32-bit
-Source: "dist\PathMgr\i386\PathMgr.dll"; DestDir: "{app}"; Flags: uninsneveruninstall
-; Other files to install on target system
-;Source: "dist\i386\PathMan.exe"; DestDir: "{app}"; Check: not Is64BitInstallMode()
-;Source: "dist\x86_64\PathMan.exe"; DestDir: "{app}"; Check: Is64BitInstallMode()
 
 [Icons]
 Name: "{group}\{#MyAppName} Folder"; Filename: "{app}"
