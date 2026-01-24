@@ -21,6 +21,7 @@ DefaultDirName={autopf}\{#MyAppName}
 DefaultGroupName={#MyAppName}
 ;DisableDirPage=yes
 ;DisableProgramGroupPage=yes
+DisableFinishedPage=yes
 InfoBeforeFile=assets\pre-install.rtf
 InfoAfterFile=assets\post-install.rtf
 
@@ -33,7 +34,6 @@ UninstallDisplayIcon={uninstallexe}
 WizardStyle=modern dynamic
 
 ChangesEnvironment=yes
-DisableFinishedPage=yes
 ;LicenseFile=LICENSE
 ;VersionInfoVersion={#MyAppVersion}
 
@@ -50,10 +50,10 @@ ArchitecturesInstallIn64BitMode=x64compatible
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
+Source: "dist\PathMgr\i386\PathMgr.dll"; DestDir: "{app}"; Flags: uninsneveruninstall
 ;Source: "dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "dist\i386\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode()
 Source: "dist\x86_64\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode()
-Source: "dist\PathMgr\i386\PathMgr.dll"; DestDir: "{app}"; Flags: uninsneveruninstall
 
 [Icons]
 Name: "{group}\{#MyAppName} Folder"; Filename: "{app}"

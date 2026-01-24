@@ -19,7 +19,7 @@ tasks:
   pathmgr:
     desc: Download PathMgr
     cmd: |
-      wget https://github.com/Bill-Stewart/PathMgr/releases/download/v2.0.0/PathMgr-2.0.0.zip
+      wget https://github.com/Bill-Stewart/PathMgr/releases/download/v2.0.0/PathMgr-2.0.0.zip -O dist/pathmgr.zip
       unzip dist/pathmgr.zip -d dist/PathMgr
 
   prepare:
@@ -36,6 +36,11 @@ tasks:
     aliases: [setup]
     desc: Inno Setup
     cmd: iscc.exe installer.iss
+
+  goup:
+    cmd: |
+      go get -u
+      go mod tidy
 
   clean:
     desc: Clean
