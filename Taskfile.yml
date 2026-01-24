@@ -46,6 +46,10 @@ tasks:
     desc: Clean
     cmd: rm -rf {{.PATH}}
 
+  goreleaser:
+    desc: Go Releaser
+    cmd: goreleaser release --snapshot --clean
+
   build:
     desc: Build All
     #deps: [clean]
