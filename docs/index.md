@@ -10,7 +10,7 @@ icon: lucide/rocket
 [![GitHub Downloads](https://img.shields.io/github/downloads/smashedr/bup/total?logo=rolldown&logoColor=white)](https://github.com/smashedr/bup/releases/latest)
 [![Image Size](https://badges.cssnr.com/ghcr/size/smashedr/bup)](https://github.com/smashedr/bup/pkgs/container/bup)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/smashedr/bup?logo=go&logoColor=white&label=go)](https://github.com/smashedr/bup/blob/master/go.mod)
-[![GitHub Last Commit](https://img.shields.io/github/last-commit/smashedr/bup?logo=speedtest&label=updated)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/smashedr/bup?logo=listenhub&label=updated)](https://github.com/smashedr/bup/pulse)
 [![GitHub Repo Size](https://img.shields.io/github/repo-size/smashedr/bup?logo=buffer&label=repo%20size)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Top Language](https://img.shields.io/github/languages/top/smashedr/bup?logo=devbox)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Contributors](https://img.shields.io/github/contributors-anon/smashedr/bup?logo=southwestairlines)](https://github.com/smashedr/bup/graphs/contributors)

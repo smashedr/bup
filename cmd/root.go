@@ -99,6 +99,8 @@ func initConfig() {
 			viper.SetConfigFile(configFile)
 			viper.SafeWriteConfigAs(configFile)
 			viper.ReadInConfig()
+		} else {
+			fmt.Printf("Error reading configuration file!")
 		}
 	}
 	fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
