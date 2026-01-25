@@ -78,5 +78,5 @@ brews:
 #      - "^docs:"
 #      - "^test:"
 
-#release:
-#  mode: prepend
+release:
+  replace_existing_artifacts: true
