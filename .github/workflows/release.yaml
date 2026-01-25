@@ -177,15 +177,15 @@ jobs:
         with:
           app-id: 146360
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: cssnr
-          repositories: "homebrew-tap"
+          owner: smashedr
+          repositories: homebrew-test
 
       - name: "Homebrew Action"
         if: ${{ !github.event.release.prerelease }}
         uses: cssnr/homebrew-action@master
         with:
           file: dist/formula/bup.rb
-          repo: cssnr/homebrew-tap
+          repo: smashedr/homebrew-test
           token: ${{ steps.app.outputs.token }}
 
       - name: "VirusTotal"
