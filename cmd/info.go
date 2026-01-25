@@ -1,0 +1,35 @@
+package cmd
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+)
+
+var infoCmd = &cobra.Command{
+	Use:     "info [name]",
+	Aliases: []string{"i", "in", "inf"},
+	Short:   "Show information about application.",
+	Long:    "Show information about application.",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("args: %s\n", args)
+		fmt.Printf("cfgFile: %s\n", cfgFile)
+		destination := viper.GetString("destination")
+		fmt.Printf("destination: %s\n", destination)
+		fmt.Printf("excludes: %s\n", viper.GetStringSlice("excludes"))
+	},
+}
+
+func init() {
+	rootCmd.AddCommand(infoCmd)
+
+	// Here you will define your flags and configuration settings.
+
+	// Cobra supports Persistent Flags which will work for this command
+	// and all subcommands, e.g.:
+	// infoCmd.PersistentFlags().String("foo", "", "A help for foo")
+
+	// Cobra supports local flags which will only run when this command
+	// is called directly, e.g.:
+	// infoCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+}

@@ -34,17 +34,6 @@ jobs:
         continue-on-error: true
         run: env
 
-      - name: "Create App Token"
-        id: app
-        uses: actions/create-github-app-token@v2
-        with:
-          app-id: 146360
-          private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: smashedr
-          repositories: "bup,homebrew-test"
-          #owner: cssnr
-          #repositories: "homebrew-tap"
-
       # Note: app/workflow tokens can NOT write to packages with packages: write
       - name: "Docker Login"
         uses: docker/login-action@v3
@@ -80,8 +69,8 @@ jobs:
           artifacts: ${{ steps.go.outputs.artifacts }}
           metadata: ${{ steps.go.outputs.metadata }}
         run: |
-          echo "artifacts: ${{ env.artifacts }}"
-          echo "metadata: ${{ env.metadata }}"
+          echo "artifacts: ${artifacts}"
+          echo "metadata: ${metadata}"
 
       - name: "Upload i386 to Actions"
         uses: actions/upload-artifact@v6
@@ -94,28 +83,6 @@ jobs:
         with:
           name: bup-x86_64
           path: dist/bup_windows_amd64_v1/bup.exe
-
-      - name: "Homebrew Action"
-        if: ${{ !github.event.release.prerelease }}
-        uses: cssnr/homebrew-action@master
-        with:
-          file: dist/homebrew/Formula/bup.rb
-          repo: smashedr/homebrew-test
-          #repo: cssnr/homebrew-tap
-          token: ${{ steps.app.outputs.token }}
-
-      - name: "Cleanup Release"
-        if: ${{ failure() }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo -e "\n## Cleanup Release\n\n" >> "$GITHUB_STEP_SUMMARY"
-          echo -e "Deleting Release and Tag: \`${{ github.ref_name }}\`\n\n" >> "$GITHUB_STEP_SUMMARY"
-          if gh release delete "${{ github.ref_name }}" --cleanup-tag;then
-            echo -e "✅ Cleanup Success.\n" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo -e "⛔ Cleanup Failed!\n" >> "$GITHUB_STEP_SUMMARY"
-          fi
 
   windows:
     name: "Windows Installer"
@@ -176,14 +143,60 @@ jobs:
         with:
           globs: "${{ env.output }}/*"
 
-  virustotal:
-    name: "VirusTotal Scan"
+  check:
+    name: "Check"
+    if: ${{ always() }}
+    runs-on: Ubuntu-latest
+    timeout-minutes: 5
+    needs: [build, windows]
+
+    steps:
+      - name: "Alls Green"
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
+          #allowed-failures: docs, linters
+          #allowed-skips: non-voting-flaky-job
+
+      - name: "Cleanup Release"
+        if: ${{ failure() }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo -e "\n## Cleanup Release\n\n" >> "$GITHUB_STEP_SUMMARY"
+          echo -e "Deleting Release and Tag: \`${{ github.ref_name }}\`\n\n" >> "$GITHUB_STEP_SUMMARY"
+          if gh release delete "${{ github.ref_name }}" --cleanup-tag;then
+            echo -e "✅ Cleanup Success.\n" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo -e "⛔ Cleanup Failed!\n" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  release:
+    name: "Release"
     if: ${{ github.event_name == 'release' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    needs: [windows]
+    needs: [check]
 
     steps:
+      - name: "Create App Token"
+        if: ${{ !github.event.release.prerelease }}
+        id: app
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: 146360
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          owner: cssnr
+          repositories: "homebrew-tap"
+
+      - name: "Homebrew Action"
+        if: ${{ !github.event.release.prerelease }}
+        uses: cssnr/homebrew-action@master
+        with:
+          file: dist/homebrew/Formula/bup.rb
+          repo: cssnr/homebrew-tap
+          token: ${{ steps.app.outputs.token }}
+
       - name: "VirusTotal"
         uses: cssnr/virustotal-action@master
         continue-on-error: true

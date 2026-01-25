@@ -52,6 +52,9 @@ Install.
 
 --8<-- "docs/snippets/install.md"
 
+Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).  
+Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
+
 Usage.
 
 - Specify `source` and `destination`
@@ -66,10 +69,16 @@ bup backup [source] [destination]
 bup b
 ```
 
-- The `list` command is INOP but prints the configuration
+- The `list` command list backups by name
 
 ```shell
 bup l
+```
+
+- The `info` command prints the configuration
+
+```shell
+bup i
 ```
 
 &nbsp;
