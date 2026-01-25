@@ -10,6 +10,34 @@ env:
   CGO_ENABLED: 0
 
 tasks:
+  goup:
+    cmd: |
+      go get -u
+      go mod tidy
+
+  lint:
+    desc: Lint
+    cmd: |
+      prettier --check .
+      yamllint -c .github/yamllint.yaml .
+      golangci-lint run
+
+  clean:
+    desc: Clean
+    cmd: rm -rf {{.PATH}}
+
+  build:
+    desc: GoReleaser Build
+    cmd: goreleaser build --snapshot --clean
+
+  build-all:
+    desc: GoReleaser Build
+    cmd: goreleaser build --snapshot --clean
+
+  release:
+    desc: GoReleaser Release
+    cmd: goreleaser release --snapshot --clean
+
   docs:
     desc: Zensical Docs
     cmd: |
@@ -24,7 +52,11 @@ tasks:
 
   prepare:
     desc: Prep Inno
+    env:
+      GOOS: windows
     cmd: |
+      #GOARCH=386 goreleaser build --snapshot --single-target
+      #GOARCH=amd64 goreleaser build --snapshot --single-target
       task build:windows:386
       task build:windows:amd64
       mkdir -p dist/i386
@@ -37,40 +69,26 @@ tasks:
     desc: Inno Setup
     cmd: iscc.exe installer.iss
 
-  goup:
-    cmd: |
-      go get -u
-      go mod tidy
-
-  clean:
-    desc: Clean
-    cmd: rm -rf {{.PATH}}
-
-  goreleaser:
-    desc: Go Releaser
-    cmd: goreleaser release --snapshot --clean
-
-  build:
-    desc: Build All
-    #deps: [clean]
-    cmds:
-      - for:
-          matrix:
-            OS: [darwin, linux, windows]
-            ARCH: [amd64, arm64]
-        cmd: |
-          OUTPUT="{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
-          {{if eq .ITEM.OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
-          echo "Building: ${OUTPUT}"
-          GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
-        silent: false
-
-      - cmd: echo "Finished Success"
-        silent: false
+  #build:
+  #  desc: Build All
+  #  #deps: [clean]
+  #  cmds:
+  #    - for:
+  #        matrix:
+  #          OS: [darwin, linux, windows]
+  #          ARCH: [amd64, arm64]
+  #      cmd: |
+  #        OUTPUT="{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
+  #        {{if eq .ITEM.OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
+  #        echo "Building: ${OUTPUT}"
+  #        GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
+  #      silent: false
+  #
+  #    - cmd: echo "Finished Success"
+  #      silent: false
 
   build:*:*:
     desc: Build OS:ARCH
-    #deps: [clean]
     vars:
       OS: "{{index .MATCH 0}}"
       ARCH: "{{index .MATCH 1}}"
@@ -86,18 +104,18 @@ tasks:
       echo "Building: ${OUTPUT}"
       GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
 
-  build:*:
-    desc: Build OS
-    #deps: [clean]
-    vars:
-      OS: "{{index .MATCH 0}}"
-      ARCH: "amd64"
-    requires:
-      vars:
-        - name: OS
-          enum: [darwin, linux, windows]
-    cmd: |
-      OUTPUT="{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-      {{if eq .OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
-      echo "Building: ${OUTPUT}"
-      GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
+  #build:*:
+  #  desc: Build OS
+  #  #deps: [clean]
+  #  vars:
+  #    OS: "{{index .MATCH 0}}"
+  #    ARCH: "amd64"
+  #  requires:
+  #    vars:
+  #      - name: OS
+  #        enum: [darwin, linux, windows]
+  #  cmd: |
+  #    OUTPUT="{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
+  #    {{if eq .OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
+  #    echo "Building: ${OUTPUT}"
+  #    GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"

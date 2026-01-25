@@ -83,44 +83,17 @@ bup backup [source] [destination]
 bup b
 ```
 
-<details><summary>📟 View Command Output</summary>
-
-```text
-PS C:\Users\Shane\IdeaProjects\django-vue> bup b
-Config File: C:\Users\Shane\.config\bup.yaml
-Enter Destination Path: C:\Users\Shane\Backup
-Saved Default Destination: C:\Users\Shane\Backup
-Source: C:\Users\Shane\IdeaProjects\django-vue
-Destination: C:\Users\Shane\Backup
-Name: django-vue
-Proceed? (y/N): y
-Directory: C:\Users\Shane\Backup\django-vue
-Excludes: [.cache .venv build dist node_modules venv]
-Archive: C:\Users\Shane\Backup\django-vue\26-01-19-20-48-20.zip
-Success!
-```
-
-</details>
-
-- The `list` command is INOP but prints the configuration
+- The `list` command list backups by name
 
 ```shell
 bup l
 ```
 
-<details><summary>📟 View Command Output</summary>
+- The `info` command prints the configuration
 
-```text
-PS C:\Users\Shane\IdeaProjects\django-vue> bup l
-Config File: C:\Users\Shane\.config\bup.yaml
-args: []
-cfgFile:
-destination: C:\Users\Shane\Backup
-excludes: [.cache .venv build dist node_modules venv]
- - List Command INOP
+```shell
+bup i
 ```
-
-</details>
 
 [![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
 
@@ -157,6 +130,8 @@ task setup
 ```
 
 # Contributing
+
+If you would like to submit a PR, please review the [CONTRIBUTING.md](#contributing-ov-file).
 
 Please consider making a donation to support the development of this project
 and [additional](https://cssnr.com/) open source projects.

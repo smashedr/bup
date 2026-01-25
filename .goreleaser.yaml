@@ -52,7 +52,6 @@ dockers_v2:
       "org.opencontainers.image.revision": "{{ .FullCommit }}"
       "org.opencontainers.image.version": "{{ .Version }}"
       "org.opencontainers.image.source": "{{ .GitURL }}"
-    #disable: "{{ if or .IsSnapshot .Prerelease }}true{{ end }}"
     disable: "{{ or .IsSnapshot .Prerelease }}"
 
 brews:
@@ -67,11 +66,9 @@ brews:
     test: |
       assert_match version.to_s, shell_output("#{bin}/bup -V")
     caveats: |
-      <<~EOF
-        View the Documentation:
-        https://smashedr.github.io/bup/
+      View the Documentation:
+      https://smashedr.github.io/bup/
 
-      EOF
     skip_upload: true
 
 #changelog:
