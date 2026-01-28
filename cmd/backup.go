@@ -50,11 +50,11 @@ func createZipArchive(source, destination string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create zip file: %w", err)
 	}
-	defer zipFile.Close()
+	defer func() { _ = zipFile.Close() }()
 
 	// Create zip writer
 	zipWriter := zip.NewWriter(zipFile)
-	defer zipWriter.Close()
+	defer func() { _ = zipWriter.Close() }()
 
 	// Get the base name of the source for proper relative paths
 	sourceBase := filepath.Base(source)
@@ -125,7 +125,7 @@ func createZipArchive(source, destination string) error {
 		if err != nil {
 			return fmt.Errorf("failed to open file %s: %w", path, err)
 		}
-		defer file.Close()
+		defer func() { _ = file.Close() }()
 
 		// Copy file content to zip
 		_, err = io.Copy(writer, file)
@@ -138,8 +138,8 @@ func createZipArchive(source, destination string) error {
 
 	if err != nil {
 		// Clean up the incomplete zip file on error
-		zipFile.Close()
-		os.Remove(zipFilename)
+		_ = zipFile.Close()
+		_ = os.Remove(zipFilename)
 		return fmt.Errorf("failed to walk directory: %w", err)
 	}
 
@@ -217,7 +217,7 @@ var backupCmd = &cobra.Command{
 			}
 		}
 
-		noConfirm, err := cmd.Flags().GetBool("yes")
+		noConfirm, _ := cmd.Flags().GetBool("yes")
 		fmt.Printf("Skip Confirmation: %v\n", noConfirm)
 
 		fmt.Printf("Source: %s\n", sourcePath)

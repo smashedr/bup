@@ -33,27 +33,22 @@ SetupIconFile=docs\favicon.ico
 UninstallDisplayIcon={uninstallexe}
 WizardStyle=modern dynamic
 
+ArchitecturesInstallIn64BitMode=x64compatible
+;ArchitecturesInstallIn64BitMode=x64compatible arm64
+
+;ArchiveExtraction=full
 ChangesEnvironment=yes
 ;LicenseFile=LICENSE
 ;VersionInfoVersion={#MyAppVersion}
-
-; "ArchitecturesAllowed=x64compatible" specifies that Setup cannot run
-; on anything but x64 and Windows 11 on Arm.
-;ArchitecturesAllowed=x64compatible
-; "ArchitecturesInstallIn64BitMode=x64compatible" requests that the
-; install be done in "64-bit mode" on x64 or Windows 11 on Arm,
-; meaning it should use the native 64-bit Program Files directory and
-; the 64-bit view of the registry.
-ArchitecturesInstallIn64BitMode=x64compatible
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 Source: "dist\PathMgr\i386\PathMgr.dll"; DestDir: "{app}"; Flags: uninsneveruninstall
-;Source: "dist\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "dist\i386\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode()
-Source: "dist\x86_64\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode()
+Source: "dist\client\bup_windows_386_sse2\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode()
+Source: "dist\client\bup_windows_amd64_v1\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode() and not IsArm64()
+Source: "dist\client\bup_windows_arm64_v8.0\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: IsArm64()
 
 [Icons]
 Name: "{group}\{#MyAppName} Folder"; Filename: "{app}"

@@ -10,6 +10,7 @@ version: 2
 
 # https://goreleaser.com/customization/project/
 project_name: bup
+dist: dist/client
 
 before:
   hooks:
