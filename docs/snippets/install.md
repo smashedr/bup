@@ -1,7 +1,7 @@
 === "brew"
 
     ```shell
-    brew install smashedr/test/bup
+    brew install cssnr/tap/bup
     ```
 
 === "github"

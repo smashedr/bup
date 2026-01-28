@@ -57,12 +57,12 @@ dockers_v2:
 
 brews:
   - repository:
-      owner: smashedr
-      name: homebrew-test
+      owner: cssnr
+      name: homebrew-tap
       token: "{{ .Env.GITHUB_TOKEN }}"
     directory: Formula
     homepage: "https://github.com/smashedr/{{ .ProjectName }}"
-    description: "Back UP CLI written in Go."
+    description: "Back UP CLI written in Go"
     license: "MIT"
     test: |
       assert_match version.to_s, shell_output("#{bin}/bup -V")

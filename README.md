@@ -27,6 +27,7 @@
 - [Install](#install)
 - [Usage](#usage)
 - [Development](#development)
+- [Support](#Support)
 - [Contributing](#contributing)
 
 Back UP `bup` CLI written in Go.
@@ -45,7 +46,7 @@ Supports directory excludes stored in the config file with the saved destination
 #### Homebrew
 
 ```shell
-brew install smashedr/test/bup
+brew install cssnr/tap/bup
 ```
 
 #### GitHub
@@ -128,6 +129,20 @@ iscc.exe installer.iss
 # or
 task setup
 ```
+
+# Support
+
+If you run into any issues or need help getting started, please do one of the following:
+
+- Report an Issue: <https://github.com/smashedr/bup/issues>
+- Q&A Discussion: <https://github.com/smashedr/bup/discussions/categories/q-a>
+- Request a Feature: <https://github.com/smashedr/bup/issues/new?template=1-feature.yaml>
+- Chat with us on Discord: <https://discord.gg/wXy6m2X8wY>
+
+[![Features](https://img.shields.io/badge/features-brightgreen?style=for-the-badge&logo=rocket&logoColor=white)](https://github.com/smashedr/bup/issues/new?template=1-feature.yaml)
+[![Issues](https://img.shields.io/badge/issues-red?style=for-the-badge&logo=southwestairlines&logoColor=white)](https://github.com/smashedr/bup/issues)
+[![Discussions](https://img.shields.io/badge/discussions-blue?style=for-the-badge&logo=theconversation&logoColor=white)](https://github.com/smashedr/bup/discussions)
+[![Discord](https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/wXy6m2X8wY)
 
 # Contributing
 
