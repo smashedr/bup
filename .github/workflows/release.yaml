@@ -72,23 +72,17 @@ jobs:
           echo "artifacts: ${artifacts}"
           echo "metadata: ${metadata}"
 
-      - name: "Upload i386 to Actions"
+      - name: "Upload Client to Actions"
         uses: actions/upload-artifact@v6
         with:
-          name: bup-i386
-          path: dist/bup_windows_386_sse2/bup.exe
-
-      - name: "Upload x86_64 to Actions"
-        uses: actions/upload-artifact@v6
-        with:
-          name: bup-x86_64
-          path: dist/bup_windows_amd64_v1/bup.exe
+          name: client
+          path: dist/client
 
       - name: "Upload Formula to Actions"
         uses: actions/upload-artifact@v6
         with:
-          name: bup-formula
-          path: dist/homebrew/Formula/bup.rb
+          name: formula
+          path: dist/client/homebrew/Formula/bup.rb
 
   windows:
     name: "Windows Installer"
@@ -103,26 +97,20 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Download i386 Artifact"
+      - name: "Download Client Artifact"
         uses: actions/download-artifact@v7
         with:
-          name: bup-i386
-          path: dist/i386
-
-      - name: "Download x86_64 Artifact"
-        uses: actions/download-artifact@v7
-        with:
-          name: bup-x86_64
-          path: dist/x86_64
+          name: client
+          path: dist/client
 
       - name: "Download PathMgr"
         uses: robinraju/release-downloader@daf26c55d821e836577a15f77d86ddc078948b05 # v1.12
         with:
-          repository: "Bill-Stewart/PathMgr"
-          fileName: "PathMgr-2.0.0.zip"
-          out-file-path: "dist/PathMgr"
-          tag: "v2.0.0"
+          repository: Bill-Stewart/PathMgr
+          fileName: PathMgr-2.0.0.zip
+          out-file-path: dist/PathMgr
           extract: true
+          tag: v2.0.0
 
       - name: "Debug Artifacts"
         run: |
@@ -161,7 +149,7 @@ jobs:
         if: ${{ !github.event.release.prerelease }}
         uses: actions/download-artifact@v7
         with:
-          name: bup-formula
+          name: formula
           path: dist/formula
 
       - name: "Debug Formula"

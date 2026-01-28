@@ -44,6 +44,8 @@ func init() {
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file [default: ~/.config/bup.yaml]")
 
+	rootCmd.Flags().BoolP("version", "V", false, "version for bup")
+
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	//rootCmd.Flags().BoolP("verbose", "v", false, "Cobra is Retarded")
@@ -91,16 +93,25 @@ func initConfig() {
 			//fmt.Printf("home: %s\n", home)
 			configPath := filepath.Join(home, ".config")
 			//fmt.Printf("configPath: %s\n", configPath)
-			os.MkdirAll(configPath, 0755)
+			if err := os.MkdirAll(configPath, 0755); err != nil {
+				fmt.Printf("Error creating config directory: %s\n", configPath)
+				return
+			}
 			configFile := filepath.Join(configPath, "bup.yaml")
 			//fmt.Printf("configFile: %s\n", configFile)
 
 			// Set a specific file to create
 			viper.SetConfigFile(configFile)
-			viper.SafeWriteConfigAs(configFile)
-			viper.ReadInConfig()
+			if err := viper.SafeWriteConfigAs(configFile); err != nil {
+				fmt.Printf("Error creating config: %s\n", configFile)
+				return
+			}
+			if err := viper.ReadInConfig(); err != nil {
+				fmt.Printf("Error reading config: %s\n", configFile)
+				return
+			}
 		} else {
-			fmt.Printf("Error reading configuration file!")
+			fmt.Println("Error reading configuration file!")
 		}
 	}
 	fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
