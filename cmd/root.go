@@ -93,10 +93,7 @@ func initConfig() {
 			//fmt.Printf("home: %s\n", home)
 			configPath := filepath.Join(home, ".config")
 			//fmt.Printf("configPath: %s\n", configPath)
-			if err := os.MkdirAll(configPath, 0755); err != nil {
-				fmt.Printf("Error creating config directory: %s\n", configPath)
-				return
-			}
+			_ = os.MkdirAll(configPath, 0755)
 			configFile := filepath.Join(configPath, "bup.yaml")
 			//fmt.Printf("configFile: %s\n", configFile)
 
