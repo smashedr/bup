@@ -33,8 +33,7 @@ SetupIconFile=docs\favicon.ico
 UninstallDisplayIcon={uninstallexe}
 WizardStyle=modern dynamic
 
-ArchitecturesInstallIn64BitMode=x64compatible
-;ArchitecturesInstallIn64BitMode=x64compatible arm64
+ArchitecturesInstallIn64BitMode=x64compatible arm64
 
 ;ArchiveExtraction=full
 ChangesEnvironment=yes

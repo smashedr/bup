@@ -1,11 +1,6 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 
-vars:
-  NAME: bup
-  PATH: dist
-  ARGS: -ldflags='-s -w'
-
 env:
   CGO_ENABLED: 0
 
@@ -24,8 +19,10 @@ tasks:
       actionlint
 
   clean:
-    desc: Clean
-    cmd: rm -rf {{.PATH}}
+    desc: Clean All
+    cmd: |
+      rm -rf dist/client
+      rm -rf out
 
   build:
     desc: GoReleaser Build
@@ -47,58 +44,19 @@ tasks:
     cmd: iscc.exe installer.iss
 
   pathmgr:
+    preconditions:
+      - sh: test ! -d dist/PathMgr
+        msg: "Already downloaded to: dist/PathMgr"
     desc: Download PathMgr
     cmd: |
       wget https://github.com/Bill-Stewart/PathMgr/releases/download/v2.0.0/PathMgr-2.0.0.zip -O dist/pathmgr.zip
       unzip dist/pathmgr.zip -d dist/PathMgr
 
-  #build:
-  #  desc: Build All
-  #  #deps: [clean]
-  #  cmds:
-  #    - for:
-  #        matrix:
-  #          OS: [darwin, linux, windows]
-  #          ARCH: [amd64, arm64]
-  #      cmd: |
-  #        OUTPUT="{{.PATH}}/{{.NAME}}-{{.ITEM.OS}}-{{.ITEM.ARCH}}"
-  #        {{if eq .ITEM.OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
-  #        echo "Building: ${OUTPUT}"
-  #        GOOS={{.ITEM.OS}} GOARCH={{.ITEM.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
-  #      silent: false
-  #
-  #    - cmd: echo "Finished Success"
-  #      silent: false
-
-  #build:*:*:
-  #  desc: Build OS:ARCH
-  #  vars:
-  #    OS: "{{index .MATCH 0}}"
-  #    ARCH: "{{index .MATCH 1}}"
-  #  requires:
-  #    vars:
-  #      - name: OS
-  #        enum: [darwin, linux, windows]
-  #      - name: ARCH
-  #        enum: [amd64, arm64, "386"]
-  #  cmd: |
-  #    OUTPUT="{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-  #    {{if eq .OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
-  #    echo "Building: ${OUTPUT}"
-  #    GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
-
-  #build:*:
-  #  desc: Build OS
-  #  #deps: [clean]
-  #  vars:
-  #    OS: "{{index .MATCH 0}}"
-  #    ARCH: "amd64"
-  #  requires:
-  #    vars:
-  #      - name: OS
-  #        enum: [darwin, linux, windows]
-  #  cmd: |
-  #    OUTPUT="{{.PATH}}/{{.NAME}}-{{.OS}}-{{.ARCH}}"
-  #    {{if eq .OS "windows"}}OUTPUT="${OUTPUT}.exe"{{end}}
-  #    echo "Building: ${OUTPUT}"
-  #    GOOS={{.OS}} GOARCH={{.ARCH}} go build {{.ARGS}} -o "${OUTPUT}"
+  test:
+    if: test ! -d dist/PathMgr
+    #preconditions:
+    #  - sh: test ! -d dist/PathMgr
+    #    msg: "Already downloaded to: dist/PathMgr"
+    desc: Test Command
+    cmd: |
+      echo "Taskfile.yaml test Successful (no test was run)..."
