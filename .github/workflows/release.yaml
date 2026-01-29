@@ -172,6 +172,7 @@ jobs:
         if: ${{ !github.event.release.prerelease }}
         uses: cssnr/homebrew-action@master
         with:
+          formula: bup.rb
           file: dist/formula/bup.rb
           repo: cssnr/homebrew-tap
           token: ${{ steps.app.outputs.token }}
