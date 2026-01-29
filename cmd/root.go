@@ -102,10 +102,7 @@ func initConfig() {
 
 			// Set a specific file to create
 			viper.SetConfigFile(configFile)
-			if err := viper.SafeWriteConfigAs(configFile); err != nil {
-				fmt.Printf("Error creating config: %s\n", configFile)
-				return
-			}
+			_ = viper.SafeWriteConfigAs(configFile)
 			if err := viper.ReadInConfig(); err != nil {
 				fmt.Printf("Error reading config: %s\n", configFile)
 				return
