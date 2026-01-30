@@ -175,6 +175,7 @@ jobs:
           formula: bup.rb
           file: dist/formula/bup.rb
           repo: cssnr/homebrew-tap
+          message: "Bump bup.rb to ${{ github.ref_name }}"
           token: ${{ steps.app.outputs.token }}
 
       - name: "VirusTotal"

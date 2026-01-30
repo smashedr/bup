@@ -104,8 +104,6 @@ func initConfig() {
 				fmt.Printf("Error reading config: %s\n", configFile)
 				return
 			}
-		} else {
-			fmt.Println("Error reading configuration file!")
 		}
 	}
 	fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
