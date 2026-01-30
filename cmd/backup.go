@@ -31,16 +31,7 @@ import (
 //	return nil
 //}
 
-func createZipArchive(source, destination string) error {
-	excludeList := viper.GetStringSlice("excludes")
-	fmt.Printf("Excludes: %s\n", excludeList)
-	//excludeMap := make(map[string]bool, len(excludeList))
-	//for _, dir := range excludeList {
-	//	excludeMap[dir] = true
-	//}
-	//fmt.Printf("Excludes: %v\n", excludeList)
-
-	// BEWARE AI RETARDED
+func createZipArchive(excludes []string, source, destination string) error {
 	// Create timestamp filename
 	timestamp := time.Now().Format("06-01-02-15-04-05") // YY-MM-DD-HH-MM-SS
 	zipFilename := filepath.Join(destination, timestamp+".zip")
@@ -69,7 +60,7 @@ func createZipArchive(source, destination string) error {
 
 		//isExcluded := excludeMap[info.Name()]
 		isExcluded := false
-		for _, pattern := range excludeList {
+		for _, pattern := range excludes {
 			matched, err := filepath.Match(pattern, info.Name())
 			if err != nil {
 				continue
@@ -165,8 +156,20 @@ var backupCmd = &cobra.Command{
 			source = "."
 			destination = viper.GetString("destination")
 		}
-		//fmt.Printf("1 - Source: %s\n", source)
-		//fmt.Printf("1 - Destination: %s\n", destination)
+		//fmt.Printf("source: %s\n", source)
+		//fmt.Printf("destination: %s\n", destination)
+
+		excludes := viper.GetStringSlice("excludes")
+		exclude, _ := cmd.Flags().GetStringSlice("exclude")
+		excludes = append(excludes, exclude...)
+		//exclude, _ := cmd.Flags().GetString("exclude")
+		//if exclude != "" {
+		//	parts := strings.Split(exclude, ",")
+		//	for _, part := range parts {
+		//		excludes = append(excludes, strings.TrimSpace(part))
+		//	}
+		//}
+		fmt.Printf("Excludes: %s\n", excludes)
 
 		if destination == "" {
 			fmt.Print("Enter Destination Path: ")
@@ -242,7 +245,7 @@ var backupCmd = &cobra.Command{
 		}
 		fmt.Printf("Directory: %s\n", fullDestPath)
 
-		if err := createZipArchive(sourcePath, fullDestPath); err != nil {
+		if err := createZipArchive(excludes, sourcePath, fullDestPath); err != nil {
 			fmt.Printf("Error creating archive: %v\n", err)
 			os.Exit(1)
 		}
@@ -260,7 +263,10 @@ func init() {
 	// and all subcommands, e.g.:
 	// backupCmd.PersistentFlags().String("foo", "", "A help for foo")
 	// backupCmd.Flags().IntVarP(&port, "port", "p", 8080, "Port to run the server on")
-	backupCmd.PersistentFlags().BoolP("yes", "y", false, "Answer Yes to Confirmation")
+	backupCmd.PersistentFlags().BoolP("yes", "y", false, "answer yes to confirmations")
+
+	backupCmd.Flags().StringSliceP("exclude", "e", []string{}, "pattern to exclude")
+	//backupCmd.Flags().StringP("exclude", "e", "", "comma-separated patterns to exclude")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
