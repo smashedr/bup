@@ -110,24 +110,20 @@ Task: <https://taskfile.dev/docs/installation>
 
 ```shell
 task build
-task build:windows
-task build:windows:amd64
+task lint
 ```
 
 Docs: <https://zensical.org/docs/get-started>
 
 ```shell
-zensical serve --open
-# or
 task docs
 ```
 
 Inno Setup: <https://jrsoftware.org/isdl.php>
 
 ```shell
-iscc.exe installer.iss
-# or
-task setup
+task pathmgr
+task inno
 ```
 
 # Support
