@@ -4,6 +4,9 @@ on:
   release:
     types: [published]
 
+env:
+  formula: bup.rb
+
 permissions:
   contents: write
 
@@ -72,17 +75,11 @@ jobs:
           echo "artifacts: ${artifacts}"
           echo "metadata: ${metadata}"
 
-      - name: "Upload Client to Actions"
+      - name: "Upload Artifact"
         uses: actions/upload-artifact@v6
         with:
           name: client
           path: dist/client
-
-      - name: "Upload Formula to Actions"
-        uses: actions/upload-artifact@v6
-        with:
-          name: formula
-          path: dist/client/homebrew/Formula/bup.rb
 
   windows:
     name: "Windows Installer"
@@ -97,7 +94,7 @@ jobs:
       - name: "Checkout"
         uses: actions/checkout@v6
 
-      - name: "Download Client Artifact"
+      - name: "Download Artifact"
         uses: actions/download-artifact@v7
         with:
           name: client
@@ -145,18 +142,18 @@ jobs:
     needs: [windows]
 
     steps:
-      - name: "Download Formula Artifact"
+      - name: "Download Artifact"
         if: ${{ !github.event.release.prerelease }}
         uses: actions/download-artifact@v7
         with:
-          name: formula
-          path: dist/formula
+          name: client
+          path: dist/client
 
-      - name: "Debug Formula"
+      - name: "Debug Artifacts"
         if: ${{ !github.event.release.prerelease }}
         continue-on-error: true
         run: |
-          ls -lAhR dist/formula
+          ls -lAhR dist
 
       - name: "Create App Token"
         if: ${{ !github.event.release.prerelease }}
@@ -169,13 +166,12 @@ jobs:
           repositories: homebrew-tap
 
       - name: "Homebrew Action"
-        if: ${{ !github.event.release.prerelease }}
+        if: ${{ !github.event.release.prerelease && env.formula != '' }}
         uses: cssnr/homebrew-action@master
         with:
-          formula: bup.rb
-          file: dist/formula/bup.rb
+          formula: ${{ env.formula }}
+          file: dist/client/homebrew/Formula/${{ env.formula }}
           repo: cssnr/homebrew-tap
-          message: "Bump bup.rb to ${{ github.ref_name }}"
           token: ${{ steps.app.outputs.token }}
 
       - name: "VirusTotal"
