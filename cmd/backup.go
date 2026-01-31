@@ -141,10 +141,11 @@ func createZipArchive(excludes []string, source, destination string) error {
 var backupCmd = &cobra.Command{
 	Use:     "backup [source] [destination]",
 	Aliases: []string{"b", "bu", "bup"},
-	Short:   "Backup source to destination as zip.",
+	Short:   "Backup source to destination as zip",
 	Long:    "Creates a zip archive of the source in the destination with a timestamp filename.",
 	Args:    cobra.RangeArgs(0, 2),
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("--------------------\n")
 		var source, destination string
 		if len(args) == 2 {
 			source = args[0]
@@ -265,7 +266,7 @@ func init() {
 	// backupCmd.Flags().IntVarP(&port, "port", "p", 8080, "Port to run the server on")
 	backupCmd.PersistentFlags().BoolP("yes", "y", false, "answer yes to confirmations")
 
-	backupCmd.Flags().StringSliceP("exclude", "e", []string{}, "pattern to exclude")
+	backupCmd.Flags().StringSliceP("exclude", "e", []string{}, "inline pattern to exclude")
 	//backupCmd.Flags().StringP("exclude", "e", "", "comma-separated patterns to exclude")
 
 	// Cobra supports local flags which will only run when this command

@@ -16,7 +16,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "bup",
 	Short: "Easily backup directories to destination with excludes.",
-	Long:  "Easily create a timestamped archive of the current directory to a destination with excludes.",
+	Long:  "Easily create a timestamped archive of the current directory or [source] to a [destination] or saved destination with excludes.",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -104,8 +104,6 @@ func initConfig() {
 				fmt.Printf("Error reading config: %s\n", configFile)
 				return
 			}
-		} else {
-			fmt.Println("Error reading configuration file!")
 		}
 	}
 	fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())

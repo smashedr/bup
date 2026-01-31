@@ -11,9 +11,10 @@ import (
 var listCmd = &cobra.Command{
 	Use:     "list [name]",
 	Aliases: []string{"l", "li", "lis", "ls"},
-	Short:   "List backups for a given name.",
+	Short:   "List backups for a given name",
 	Long:    "List all backups or backups for specified name.",
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("--------------------\n")
 		//fmt.Printf("args: %s\n", args)
 		destination := viper.GetString("destination")
 		fmt.Printf("Destination: %s\n", destination)
