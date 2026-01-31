@@ -6,6 +6,8 @@ on:
 
 env:
   formula: bup.rb
+  tap-owner: cssnr
+  tap-repo: homebrew-tap
 
 permissions:
   contents: write
@@ -162,8 +164,8 @@ jobs:
         with:
           app-id: 146360
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-          owner: cssnr
-          repositories: homebrew-tap
+          owner: ${{ env.tap-owner }}
+          repositories: ${{ env.tap-repo }}
 
       - name: "Homebrew Action"
         if: ${{ !github.event.release.prerelease && env.formula != '' }}
@@ -171,7 +173,7 @@ jobs:
         with:
           formula: ${{ env.formula }}
           file: dist/client/homebrew/Formula/${{ env.formula }}
-          repo: cssnr/homebrew-tap
+          repo: ${{ env.tap-owner }}/${{ env.tap-repo }}
           token: ${{ steps.app.outputs.token }}
 
       - name: "VirusTotal"
