@@ -32,13 +32,13 @@ PrivilegesRequiredOverridesAllowed=dialog
 SetupIconFile=docs\favicon.ico
 UninstallDisplayIcon={uninstallexe}
 WizardStyle=modern dynamic
+VersionInfoVersion={#MyAppVersion}
 
 ArchitecturesInstallIn64BitMode=x64compatible arm64
 
 ;ArchiveExtraction=full
 ChangesEnvironment=yes
 ;LicenseFile=LICENSE
-;VersionInfoVersion={#MyAppVersion}
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
