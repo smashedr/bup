@@ -12,10 +12,6 @@ import (
 	"time"
 )
 
-//var (
-//	port int
-//)
-
 //func validateDirectory(path, name string) error {
 //	info, err := os.Stat(path)
 //	if err != nil {
@@ -31,6 +27,19 @@ import (
 //	return nil
 //}
 
+func formatBytes(bytes int64) string {
+	const unit = 1024
+	if bytes < unit {
+		return fmt.Sprintf("%d B", bytes)
+	}
+	div, exp := int64(unit), 0
+	for n := bytes / unit; n >= unit; n /= unit {
+		div *= unit
+		exp++
+	}
+	return fmt.Sprintf("%.1f %cB", float64(bytes)/float64(div), "KMGTPE"[exp])
+}
+
 func createZipArchive(excludes []string, source, destination string) error {
 	// Create timestamp filename
 	timestamp := time.Now().Format("06-01-02-15-04-05") // YY-MM-DD-HH-MM-SS
@@ -45,7 +54,7 @@ func createZipArchive(excludes []string, source, destination string) error {
 
 	// Create zip writer
 	zipWriter := zip.NewWriter(zipFile)
-	defer func() { _ = zipWriter.Close() }()
+	//defer func() { _ = zipWriter.Close() }()
 
 	// Get the base name of the source for proper relative paths
 	sourceBase := filepath.Base(source)
@@ -132,6 +141,14 @@ func createZipArchive(excludes []string, source, destination string) error {
 		_ = zipFile.Close()
 		_ = os.Remove(zipFilename)
 		return fmt.Errorf("failed to walk directory: %w", err)
+	}
+
+	_ = zipWriter.Close()
+	fileInfo, err := zipFile.Stat()
+	if err != nil {
+		fmt.Printf("Error getting archive info: %v", err)
+	} else {
+		fmt.Printf("Archive Size: %s\n", formatBytes(fileInfo.Size()))
 	}
 
 	fmt.Printf("Archive: %s\n", zipFilename)

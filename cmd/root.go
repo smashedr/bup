@@ -57,12 +57,14 @@ func initConfig() {
 
 	// Set default excluded directories
 	viper.SetDefault("excludes", []string{
-		".cache",
+		".*cache",
 		".venv",
 		"build",
 		"dist",
 		"node_modules",
+		"out",
 		"venv",
+		"*.exe",
 	})
 
 	if cfgFile != "" {
@@ -73,6 +75,7 @@ func initConfig() {
 			fmt.Printf("Unable to read config file: %s\n\n", viper.ConfigFileUsed())
 			os.Exit(1)
 		}
+		fmt.Printf("Config File: %s\n", cfgFile)
 	} else {
 		// Find Config
 		viper.SetConfigType("yaml")
@@ -89,22 +92,24 @@ func initConfig() {
 		//viper.ReadInConfig()
 
 		if err := viper.ReadInConfig(); err != nil {
-			home, _ := os.UserHomeDir()
-			//fmt.Printf("home: %s\n", home)
-			configPath := filepath.Join(home, ".config")
+			homeDir, err := os.UserHomeDir()
+			if err != nil {
+				homeDir = "."
+			}
+			fmt.Printf("homeDir: %s\n", homeDir)
+			configPath := filepath.Join(homeDir, ".config")
 			//fmt.Printf("configPath: %s\n", configPath)
 			_ = os.MkdirAll(configPath, 0755)
 			configFile := filepath.Join(configPath, "bup.yaml")
 			//fmt.Printf("configFile: %s\n", configFile)
-
-			// Set a specific file to create
 			viper.SetConfigFile(configFile)
 			_ = viper.SafeWriteConfigAs(configFile)
 			if err := viper.ReadInConfig(); err != nil {
-				fmt.Printf("Error reading config: %s\n", configFile)
-				return
+				fmt.Printf("Error reading config: %s\nUsing Default Config!", configFile)
 			}
+			fmt.Printf("Config File: %s\n", configFile)
+		} else {
+			fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
 		}
 	}
-	fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
 }
