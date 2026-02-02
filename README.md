@@ -24,6 +24,9 @@
 [![Docker](https://img.shields.io/badge/docker_run-ghcr.io%2Fsmashedr%2Fbup-blue?style=flat-square&logo=docker)](#docker)
 [![GitHub](https://img.shields.io/badge/curl_--L-i.jpillora.com%2Fsmashedr%2Fbup!|bash-blue?style=flat-square&logo=github)](#github)
 
+<a title="BackUP" href="https://smashedr.github.io/bup" target="_blank">
+<img alt="BackUP" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/smashedr/bup/refs/heads/master/docs/assets/images/logo.png"></a>
+
 - [Install](#install)
 - [Usage](#usage)
 - [Development](#development)
