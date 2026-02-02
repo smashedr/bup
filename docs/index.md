@@ -15,7 +15,7 @@ icon: lucide/rocket
 [![GitHub Top Language](https://img.shields.io/github/languages/top/smashedr/bup?logo=devbox)](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 [![GitHub Contributors](https://img.shields.io/github/contributors-anon/smashedr/bup?logo=southwestairlines)](https://github.com/smashedr/bup/graphs/contributors)
 [![GitHub Issues](https://img.shields.io/github/issues/smashedr/bup?logo=codeforces&logoColor=white)](https://github.com/smashedr/bup/issues)
-[![GitHub Discussions](https://img.shields.io/github/discussions/smashedr/bup?logo=rocketdotchat&logoColor=white)](https://github.com/smashedr/bup/discussions)
+[![GitHub Discussions](https://img.shields.io/github/discussions/smashedr/bup?logo=theconversation&logoColor=white)](https://github.com/smashedr/bup/discussions)
 [![GitHub Forks](https://img.shields.io/github/forks/smashedr/bup?style=flat&logo=forgejo&logoColor=white)](https://github.com/smashedr/bup/forks)
 [![GitHub Repo Stars](https://img.shields.io/github/stars/smashedr/bup?style=flat&logo=gleam&logoColor=white)](https://github.com/smashedr/bup/stargazers)
 [![GitHub Org Stars](https://img.shields.io/github/stars/cssnr?style=flat&logo=apachespark&logoColor=white&label=org%20stars)](https://cssnr.github.io/)
@@ -24,10 +24,10 @@ icon: lucide/rocket
 
 Back UP `bup` CLI written in Go.
 
---8<-- "docs/snippets/install.md"
-
 Creates an archive of the `source` directory and puts it in the `destination` directory
 in a sub-folder with the `name` of the `source` directory and a timestamped filename.
+
+--8<-- "docs/snippets/install.md"
 
 Remembers your `destination` directory and uses the current directory as `source` by default.
 
@@ -51,9 +51,6 @@ If you run into any issues or have any questions, [support](support.md) is avail
 Install.
 
 --8<-- "docs/snippets/install.md"
-
-Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).  
-Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
 
 Usage.
 
