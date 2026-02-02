@@ -5,6 +5,7 @@
 #ifndef MyAppVersion
   #define MyAppVersion "0.0.1"
 #endif
+#define MyAppFileName "bup"
 
 [Setup]
 AppId={{5A1C755C-43D6-4445-BFC9-ABF23CEEF33E}
@@ -25,7 +26,7 @@ DisableFinishedPage=yes
 InfoBeforeFile=assets\pre-install.rtf
 InfoAfterFile=assets\post-install.rtf
 
-OutputBaseFilename=bup_Windows_Installer
+OutputBaseFilename={#MyAppFileName}_Windows_Installer
 OutputDir=out
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
@@ -45,9 +46,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 Source: "dist\PathMgr\i386\PathMgr.dll"; DestDir: "{app}"; Flags: uninsneveruninstall
-Source: "dist\client\bup_windows_386_sse2\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode()
-Source: "dist\client\bup_windows_amd64_v1\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode() and not IsArm64()
-Source: "dist\client\bup_windows_arm64_v8.0\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: IsArm64()
+Source: "dist\client\{#MyAppFileName}_windows_386_sse2\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: not Is64BitInstallMode()
+Source: "dist\client\{#MyAppFileName}_windows_amd64_v1\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: Is64BitInstallMode() and not IsArm64()
+Source: "dist\client\{#MyAppFileName}_windows_arm64_v8.0\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion; Check: IsArm64()
 
 [Icons]
 Name: "{group}\{#MyAppName} Folder"; Filename: "{app}"
