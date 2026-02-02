@@ -12,18 +12,15 @@ var (
 	cfgFile string
 )
 
-// rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "bup",
 	Short: "Easily backup directories to destination with excludes.",
 	Long:  "Easily create a timestamped archive of the current directory or [source] to a [destination] or saved destination with excludes.",
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
+	// Consider moving backup to the top level command
 	// Run: func(cmd *cobra.Command, args []string) { },
 }
 
 func SetVersionInfo(version, commit, date string) {
-	// https://www.jvt.me/posts/2023/02/27/go-cobra-goreleaser-version/
 	rootCmd.Version = fmt.Sprintf("%s (Built on %s from SHA %s)", version, date, commit)
 }
 
@@ -37,25 +34,15 @@ func Execute() {
 }
 
 func init() {
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
 	cobra.OnInitialize(initConfig)
-
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file [default: ~/.config/bup.yaml]")
-
 	rootCmd.Flags().BoolP("version", "V", false, "version for bup")
-
-	// Cobra also supports local flags, which will only run
-	// when this action is called directly.
-	//rootCmd.Flags().BoolP("verbose", "v", false, "Cobra is Retarded")
 }
 
 func initConfig() {
 	//fmt.Printf("initConfig: cfgFile: %s\n", cfgFile)
 	//viper.SetEnvPrefix("bup")
-
-	// Set default excluded directories
+	viper.SetDefault("clipboard", true)
 	viper.SetDefault("excludes", []string{
 		".*cache",
 		".venv",
@@ -67,8 +54,8 @@ func initConfig() {
 		"*.exe",
 	})
 
+	// Provided Config
 	if cfgFile != "" {
-		// Provided Config
 		viper.SetConfigFile(cfgFile)
 		err := viper.ReadInConfig()
 		if err != nil {
@@ -76,40 +63,38 @@ func initConfig() {
 			os.Exit(1)
 		}
 		fmt.Printf("Config File: %s\n", cfgFile)
-	} else {
-		// Find Config
-		viper.SetConfigType("yaml")
-		viper.SetConfigName("bup")
+		return
+	}
 
-		viper.AddConfigPath(".")
-		viper.AddConfigPath("$HOME")
-		viper.AddConfigPath("$HOME/.config")
-		viper.AddConfigPath("$HOME/AppData/Local")
-		viper.AddConfigPath("$HOME/AppData/Roaming")
-		viper.AddConfigPath("$HOME/Library/Application Support")
+	// Find Config
+	viper.SetConfigType("yaml")
+	viper.SetConfigName("bup")
 
-		//viper.SafeWriteConfig()
-		//viper.ReadInConfig()
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("$HOME")
+	viper.AddConfigPath("$HOME/.config")
+	viper.AddConfigPath("$HOME/AppData/Local")
+	viper.AddConfigPath("$HOME/AppData/Roaming")
+	viper.AddConfigPath("$HOME/Library/Application Support")
 
-		if err := viper.ReadInConfig(); err != nil {
-			homeDir, err := os.UserHomeDir()
-			if err != nil {
-				homeDir = "."
-			}
-			fmt.Printf("homeDir: %s\n", homeDir)
-			configPath := filepath.Join(homeDir, ".config")
-			//fmt.Printf("configPath: %s\n", configPath)
-			_ = os.MkdirAll(configPath, 0755)
-			configFile := filepath.Join(configPath, "bup.yaml")
-			//fmt.Printf("configFile: %s\n", configFile)
-			viper.SetConfigFile(configFile)
-			_ = viper.SafeWriteConfigAs(configFile)
-			if err := viper.ReadInConfig(); err != nil {
-				fmt.Printf("Error reading config: %s\nUsing Default Config!", configFile)
-			}
-			fmt.Printf("Config File: %s\n", configFile)
-		} else {
-			fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			homeDir = "."
 		}
+		fmt.Printf("homeDir: %s\n", homeDir)
+		configPath := filepath.Join(homeDir, ".config")
+		//fmt.Printf("configPath: %s\n", configPath)
+		_ = os.MkdirAll(configPath, 0755)
+		configFile := filepath.Join(configPath, "bup.yaml")
+		//fmt.Printf("configFile: %s\n", configFile)
+		viper.SetConfigFile(configFile)
+		_ = viper.SafeWriteConfigAs(configFile)
+		if err := viper.ReadInConfig(); err != nil {
+			fmt.Printf("Error reading config: %s\nUsing Default Config!", configFile)
+		}
+		fmt.Printf("Config File: %s\n", configFile)
+	} else {
+		fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
 	}
 }
