@@ -56,11 +56,18 @@ tasks:
   vhs:
     desc: Create VHS Tape
     summary: Requires a bup.yaml with a valid backup destination
+    vars:
+      TAPE_FILE: '{{.CLI_ARGS | default "demo.tape"}}'
     cmds:
-      - rm -rf "$HOME/backup/bup"
-      - cp -f assets/bup.tape bup.tape
-      - vhs bup.tape
-      - defer: rm -f bup.tape
+      - task: vhs-pre
+      - echo "Creating Tape - {{.TAPE_FILE}}"
+      - cp -f "assets/{{.TAPE_FILE}}" "{{.TAPE_FILE}}"
+      - vhs "{{.TAPE_FILE}}"
+      - defer: rm -f "{{.TAPE_FILE}}"
+
+  vhs-pre:
+    desc: VHS Tape Cleanup
+    cmd: rm -rf "$HOME/backup/bup"
 
   test:
     if: test ! -d dist/PathMgr

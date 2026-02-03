@@ -1,6 +1,6 @@
-Output dist/bup.gif
-Output dist/bup.mp4
-Output dist/bup.webm
+Output dist/demo.gif
+#Output dist/demo.mp4
+#Output dist/demo.webm
 
 Require bup
 
