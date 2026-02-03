@@ -5,14 +5,14 @@ Output dist/demo.gif
 Require bup
 
 Set Theme "Catppuccin Frappe"
-Set MarginFill "#6B50FF"
+Set MarginFill "#3590D6"
 Set Margin 10
 Set WindowBar Colorful
-Set BorderRadius 10
-Set Padding 30
+Set BorderRadius 12
+Set Padding 20
 Set Width 1200
 Set Height 900
-Set FontSize 26
+Set FontSize 34
 
 Type "bup backup ."
 Sleep 0.5s
