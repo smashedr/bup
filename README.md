@@ -42,7 +42,7 @@ Remembers your `destination` directory and uses the current directory as `source
 
 Supports directory excludes stored in the config file with the saved destination.
 
-[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
+[![VHS Tape](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/bup/bup.gif)](https://smashedr.github.io/bup/)
 
 ## Install
 
@@ -72,6 +72,8 @@ docker run --rm ghcr.io/smashedr/bup:latest
 ```shell
 go install github.com/smashedr/bup@latest
 ```
+
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
 
 ## Usage
 

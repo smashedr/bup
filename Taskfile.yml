@@ -53,6 +53,15 @@ tasks:
       wget https://github.com/Bill-Stewart/PathMgr/releases/download/v2.0.0/PathMgr-2.0.0.zip -O dist/pathmgr.zip
       unzip dist/pathmgr.zip -d dist/PathMgr
 
+  vhs:
+    desc: Create VHS Tape
+    summary: Requires a bup.yaml with a valid backup destination
+    cmds:
+      - rm -rf "$HOME/backup/bup"
+      - cp -f assets/bup.tape bup.tape
+      - vhs bup.tape
+      - defer: rm -f bup.tape
+
   test:
     if: test ! -d dist/PathMgr
     #preconditions:
