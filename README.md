@@ -1,6 +1,5 @@
 [![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/bup?logo=github)](https://github.com/smashedr/bup/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/smashedr/bup/total?logo=rolldown&logoColor=white)](https://github.com/smashedr/bup/releases/latest)
-[![Image Size](https://badges.cssnr.com/ghcr/size/smashedr/bup)](https://github.com/smashedr/bup/pkgs/container/bup)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/smashedr/bup?logo=go&logoColor=white&label=go)](https://github.com/smashedr/bup/blob/master/go.mod)
 [![Deployment Docs](https://img.shields.io/github/deployments/smashedr/bup/docs?logo=materialformkdocs&logoColor=white&label=docs)](https://github.com/smashedr/bup/deployments/docs)
 [![Deployment Preview](https://img.shields.io/github/deployments/smashedr/bup/preview?logo=materialformkdocs&logoColor=white&label=preview)](https://github.com/smashedr/bup/deployments/preview)
@@ -22,9 +21,9 @@
 
 [![Homebrew](https://img.shields.io/badge/brew_install-cssnr%2Ftap%2Fbup-blue?style=flat-square&logo=homebrew)](#homebrew)
 [![GitHub](https://img.shields.io/badge/curl_--L-i.jpillora.com%2Fsmashedr%2Fbup!|bash-blue?style=flat-square&logo=github)](#github)
-[![Static Badge](https://img.shields.io/badge/download-windows--installer.exe-blue?style=flat-square&logo=data:image/svg%2bxml;base64,PHN2ZyB3aWR0aD0iMjQ5MCIgaGVpZ2h0PSIyNTAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+PHBhdGggZD0iTTAgMzYuMzU3TDEwNC42MiAyMi4xMWwuMDQ1IDEwMC45MTQtMTA0LjU3LjU5NUwwIDM2LjM1OHptMTA0LjU3IDk4LjI5M2wuMDggMTAxLjAwMkwuMDgxIDIyMS4yNzVsLS4wMDYtODcuMzAyIDEwNC40OTQuNjc3em0xMi42ODItMTE0LjQwNUwyNTUuOTY4IDB2MTIxLjc0bC0xMzguNzE2IDEuMVYyMC4yNDZ6TTI1NiAxMzUuNmwtLjAzMyAxMjEuMTkxLTEzOC43MTYtMTkuNTc4LS4xOTQtMTAxLjg0TDI1NiAxMzUuNnoiIGZpbGw9IiMwMEFERUYiLz48L3N2Zz4=)](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe)
+[![Windows Installer](https://img.shields.io/badge/download-windows--installer.exe-blue?style=flat-square&logo=data:image/svg%2bxml;base64,PHN2ZyB3aWR0aD0iMjQ5MCIgaGVpZ2h0PSIyNTAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+PHBhdGggZD0iTTAgMzYuMzU3TDEwNC42MiAyMi4xMWwuMDQ1IDEwMC45MTQtMTA0LjU3LjU5NUwwIDM2LjM1OHptMTA0LjU3IDk4LjI5M2wuMDggMTAxLjAwMkwuMDgxIDIyMS4yNzVsLS4wMDYtODcuMzAyIDEwNC40OTQuNjc3em0xMi42ODItMTE0LjQwNUwyNTUuOTY4IDB2MTIxLjc0bC0xMzguNzE2IDEuMVYyMC4yNDZ6TTI1NiAxMzUuNmwtLjAzMyAxMjEuMTkxLTEzOC43MTYtMTkuNTc4LS4xOTQtMTAxLjg0TDI1NiAxMzUuNnoiIGZpbGw9IiMwMEFERUYiLz48L3N2Zz4=)](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe)
 
-<a title="BackUP" href="https://smashedr.github.io/bup" target="_blank">
+<a title="BackUP" href="https://smashedr.github.io/bup/" target="_blank">
 <img alt="BackUP" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/smashedr/bup/refs/heads/master/docs/assets/images/logo.png"></a>
 
 - [Install](#install)
