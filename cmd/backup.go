@@ -47,16 +47,7 @@ var backupCmd = &cobra.Command{
 		fmt.Printf("Excludes: %s\n", excludes)
 
 		if destination == "" {
-			fmt.Print("Enter Destination Path: ")
-			var response string
-			_, _ = fmt.Scanln(&response)
-			//fmt.Printf("response: \"%s\"\n", response)
-			responseInfo, err := os.Stat(response)
-			if err != nil || !responseInfo.IsDir() {
-				fmt.Printf("Error: inalid destination: %s\n", response)
-				return
-			}
-			destination = response
+			destination = promptForDestination()
 		}
 
 		sourceInfo, err := os.Stat(source)
@@ -122,10 +113,12 @@ var backupCmd = &cobra.Command{
 
 		// Create timestamp filename
 		timestamp := time.Now().Format("06-01-02-15-04-05") // YY-MM-DD-HH-MM-SS
-		zipFilename := filepath.Join(fullDestPath, timestamp+".zip")
-		fmt.Printf("zipFilename: %s\n", zipFilename)
+		zipFileName := timestamp + ".zip"
+		fmt.Printf("zipFileName: %s\n", zipFileName)
+		zipFilePath := filepath.Join(fullDestPath, zipFileName)
+		fmt.Printf("zipFilePath: %s\n", zipFilePath)
 
-		if err := archive.CreateZipArchive(excludes, sourcePath, zipFilename); err != nil {
+		if err := archive.CreateZipArchive(excludes, sourcePath, zipFilePath); err != nil {
 			fmt.Printf("Error creating archive: %v\n", err)
 			os.Exit(1)
 		}
@@ -134,21 +127,54 @@ var backupCmd = &cobra.Command{
 		fmt.Printf("copyToClipboard: %v\n", copyToClipboard)
 		if copyToClipboard {
 			if err := clipboard.Init(); err != nil {
-				fmt.Printf("%v\n", err)
+				//fmt.Printf("%v\n", err)
+				fmt.Printf("Clipboard not available.\n")
 			} else {
-				clipboard.Write(clipboard.FmtText, []byte(zipFilename))
+				clipboard.Write(clipboard.FmtText, []byte(zipFilePath))
 			}
 		}
 
-		fileInfo, err := os.Stat(zipFilename)
+		fileInfo, err := os.Stat(zipFilePath)
 		if err != nil {
 			fmt.Printf("Error getting archive info: %v", err)
 		} else {
 			fmt.Printf("Archive Size: %s\n", formatBytes(fileInfo.Size()))
 		}
 
-		fmt.Printf("Success!\n")
+		fmt.Printf("Archive File: %s\nSuccess!\n", zipFilePath)
 	},
+}
+
+func promptForDestination() string {
+	for {
+		fmt.Print("Enter Destination Path: ")
+
+		var input string
+		_, _ = fmt.Scanln(&input)
+
+		// Expand ~ to home directory
+		if strings.HasPrefix(input, "~") {
+			home, err := os.UserHomeDir()
+			if err != nil {
+				fmt.Println("Error: unable to resolve home directory")
+				continue
+			}
+
+			if input == "~" {
+				input = home
+			} else if strings.HasPrefix(input, "~/") {
+				input = filepath.Join(home, input[2:])
+			}
+		}
+
+		info, err := os.Stat(input)
+		if err != nil || !info.IsDir() {
+			fmt.Printf("Error: invalid destination: %s\n", input)
+			continue
+		}
+
+		return input
+	}
 }
 
 func formatBytes(bytes int64) string {
