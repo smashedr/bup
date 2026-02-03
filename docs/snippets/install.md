@@ -14,12 +14,6 @@
 
         Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
 
-=== "docker"
-
-    ```shell
-    docker run --rm ghcr.io/smashedr/bup:latest
-    ```
-
 === "source"
 
     ```shell
