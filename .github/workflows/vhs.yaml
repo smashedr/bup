@@ -132,7 +132,7 @@ jobs:
           which bup
           bup -V
           bup --version
-          bup .
+          bup b .
           echo success
           exit 1
 
