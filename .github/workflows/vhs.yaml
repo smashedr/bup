@@ -117,6 +117,7 @@ jobs:
           [ -n "${{ env.target }}" ]
           mkdir -p "${{ env.tape-dir }}"
           mkdir -p "${{ env.image-dir }}"
+          mkdir -p "${{ github.workspace }}/backup"
           echo aws s3 cp "${{ env.image }}" "s3://${{ env.bucket }}/${{ env.target }}"
 
       - name: "Install Release"
@@ -129,7 +130,7 @@ jobs:
         with:
           to-file: "bup.yaml"
           data: |
-            {"destination": "${{ github.workspace }}"}
+            {"destination": "${{ github.workspace }}/backup"}
 
       - name: "Debug Release"
         #continue-on-error: true
@@ -138,15 +139,6 @@ jobs:
           #echo "PATH: $PATH"
           which bup
           bup -V
-          bup --version
-          bup b .
-          bup l
-          echo success
-          exit 1
-
-      - name: "Exit"
-        run: |
-          exit 1
 
       - name: "Install VHS"
         uses: jaxxstorm/action-install-gh-release@v1.10.0
@@ -175,7 +167,8 @@ jobs:
 
       - name: "Create VHS"
         run: |
-          vhs "${{ env.tape }}"
+          #vhs "${{ env.tape }}"
+          script -q -e -c "vhs ${{ env.tape }}" /dev/null
 
       - name: "Debug VHS"
         run: |
