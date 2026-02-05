@@ -124,17 +124,6 @@ jobs:
         with:
           repo: ${{ github.repository }}
 
-      #- name: "Debug Release"
-      #  #continue-on-error: true
-      #  run: |
-      #    export PATH="${PATH}:${HOME}/bin"
-      #    echo "PATH: $PATH"
-      #    ir --version
-      #    ir info
-      #    ir smashedr/bup
-      #    which bup
-      #    bup -V
-
       - name: "Install VHS"
         uses: jaxxstorm/action-install-gh-release@v1.10.0
         with:
