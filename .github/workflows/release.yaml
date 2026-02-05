@@ -39,18 +39,18 @@ jobs:
         continue-on-error: true
         run: env
 
-      # Note: app/workflow tokens can NOT write to packages with packages: write
-      - name: "Docker Login"
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ vars.GHCR_USER }}
-          password: ${{ secrets.GHCR_PASS }}
-
-      - name: "Setup Buildx"
-        uses: docker/setup-buildx-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
+      ## Note: app/workflow tokens can NOT write to packages with packages: write
+      #- name: "Docker Login"
+      #  uses: docker/login-action@v3
+      #  with:
+      #    registry: ghcr.io
+      #    username: ${{ vars.GHCR_USER }}
+      #    password: ${{ secrets.GHCR_PASS }}
+      #
+      #- name: "Setup Buildx"
+      #  uses: docker/setup-buildx-action@v3
+      #  with:
+      #    platforms: linux/amd64,linux/arm64
 
       - name: "Setup Go"
         uses: actions/setup-go@v5
