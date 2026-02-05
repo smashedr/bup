@@ -140,7 +140,12 @@ jobs:
           bup -V
           bup --version
           bup b .
+          bup l
           echo success
+          exit 1
+
+      - name: "Exit"
+        run: |
           exit 1
 
       - name: "Install VHS"
