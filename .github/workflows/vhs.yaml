@@ -124,6 +124,13 @@ jobs:
         with:
           repo: ${{ github.repository }}
 
+      - name: "Write Config"
+        uses: teunmooij/yaml@v1
+        with:
+          to-file: "bup.yaml"
+          data: |
+            {"destination": "${{ github.workspace }}"}
+
       - name: "Debug Release"
         #continue-on-error: true
         run: |
@@ -154,12 +161,12 @@ jobs:
           ttyd --version
           vhs --version
 
-      - name: "Write Config"
-        uses: teunmooij/yaml@v1
-        with:
-          to-file: "bup.yaml"
-          data: |
-            {"destination": "${{ github.workspace }}"}
+      #- name: "Write Config"
+      #  uses: teunmooij/yaml@v1
+      #  with:
+      #    to-file: "bup.yaml"
+      #    data: |
+      #      {"destination": "${{ github.workspace }}"}
 
       - name: "Create VHS"
         run: |
