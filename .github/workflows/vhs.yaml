@@ -168,8 +168,8 @@ jobs:
       - name: "Create VHS"
         run: |
           #vhs "${{ env.tape }}"
-          script -q -e -c "vhs ${{ env.tape }}" /dev/null
-
+          #script -q -e -c "vhs ${{ env.tape }}" /dev/null
+          stdbuf -oL -eL vhs "${{ env.tape }}"
       - name: "Debug VHS"
         run: |
           ls "${{ env.tape-dir }}"
