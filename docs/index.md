@@ -36,7 +36,7 @@ To get started see the [Quick Start](#quick-start) section or check out the [Fea
 
 If you run into any issues or have any questions, [support](support.md) is available.
 
-[![VHS Tape](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/bup/demo.gif)](#quick-start)
+[![VHS Tape](https://cssnr.s3.amazonaws.com/bup/demo.gif)](#quick-start)
 
 ## :lucide-sparkles: Features
 

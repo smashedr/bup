@@ -41,7 +41,7 @@ Remembers your `destination` directory and uses the current directory as `source
 
 Supports directory excludes stored in the config file with the saved destination.
 
-[![VHS Tape](https://raw.githubusercontent.com/smashedr/repo-images/refs/heads/master/bup/demo.gif)](https://smashedr.github.io/bup/)
+[![VHS Tape](https://cssnr.s3.amazonaws.com/bup/demo.gif)](https://smashedr.github.io/bup/)
 
 ## Install
 
