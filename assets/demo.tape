@@ -17,19 +17,21 @@ Set FontSize 34
 Type "bup backup ."
 Sleep 0.5s
 Enter
-Wait /Proceed\?/
-Sleep 2s
-Type "y"
+Wait /Yes./
 Sleep 1s
+Right
+Sleep 0.4s
+Left
+Sleep 0.4s
+
 Enter
-Wait
 Sleep 3s
 
 Type "bup list"
 Sleep 0.5s
 Enter
 Wait
-Screenshot dist/bup.png
+#Screenshot dist/bup.png
 Sleep 2s
 
 Type "bup l bup"
