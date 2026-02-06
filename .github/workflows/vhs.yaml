@@ -125,6 +125,9 @@ jobs:
       #  with:
       #    repo: ${{ github.repository }}
 
+      - name: "Install App Dependencies"
+        run: sudo apt-get update && sudo apt-get install -y libx11-dev
+
       - name: "Setup Go"
         #if: ${{ !inputs.publish }}
         uses: actions/setup-go@v5
