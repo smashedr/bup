@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/charmbracelet/huh"
 	"github.com/smashedr/bup/internal/archive"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -94,12 +95,19 @@ var backupCmd = &cobra.Command{
 		fmt.Printf("Name: %s\n", sourceName)
 
 		if !noConfirm {
-			fmt.Print("Proceed? (y/N): ")
-			var response string
-			_, _ = fmt.Scanln(&response)
-			//fmt.Printf("response: \"%s\"\n", response)
-			if len(response) < 1 || strings.ToUpper(response[:1]) != "Y" {
-				fmt.Println("Operation cancelled")
+			var confirm = true
+			form := huh.NewConfirm().
+				Title("Proceed?").
+				Affirmative("Yes.").
+				Negative("No!").
+				Value(&confirm)
+			err := form.Run()
+			if err != nil {
+				fmt.Printf("prompt error: %v\n", err)
+				os.Exit(1)
+			}
+			if !confirm {
+				fmt.Printf("Operation cancelled\n")
 				os.Exit(0)
 			}
 		}
@@ -146,35 +154,45 @@ var backupCmd = &cobra.Command{
 }
 
 func promptForDestination() string {
-	for {
-		fmt.Print("Enter Destination Path: ")
-
-		var input string
-		_, _ = fmt.Scanln(&input)
-
-		// Expand ~ to home directory
+	validate := func(input string) error {
 		if strings.HasPrefix(input, "~") {
-			home, err := os.UserHomeDir()
+			homeDir, err := os.UserHomeDir()
 			if err != nil {
-				fmt.Println("Error: unable to resolve home directory")
-				continue
+				return fmt.Errorf("cannot determine home directory")
 			}
-
-			if input == "~" {
-				input = home
-			} else if strings.HasPrefix(input, "~/") {
-				input = filepath.Join(home, input[2:])
-			}
+			input = filepath.Join(homeDir, input[1:])
 		}
-
 		info, err := os.Stat(input)
-		if err != nil || !info.IsDir() {
-			fmt.Printf("Error: invalid destination: %s\n", input)
-			continue
+		if err != nil {
+			if os.IsNotExist(err) {
+				return fmt.Errorf("directory does not exist")
+			}
+			return err
 		}
-
-		return input
+		if !info.IsDir() {
+			return fmt.Errorf("path is not a directory")
+		}
+		return nil
 	}
+
+	var result string
+	form := huh.NewInput().
+		Title("Enter full path to backup directory.").
+		Prompt("> ").
+		Validate(validate).
+		Value(&result)
+	err := form.Run()
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		return ""
+	}
+	fmt.Printf("You choose %q\n", result)
+	absPath, err := filepath.Abs(result)
+	if err != nil {
+		return ""
+	}
+	fmt.Printf("absPath %q\n", absPath)
+	return absPath
 }
 
 func formatBytes(bytes int64) string {
@@ -192,6 +210,5 @@ func formatBytes(bytes int64) string {
 
 func init() {
 	rootCmd.AddCommand(backupCmd)
-	backupCmd.PersistentFlags().BoolP("yes", "y", false, "answer yes to confirmations")
 	backupCmd.Flags().StringSliceP("exclude", "e", []string{}, "inline pattern to exclude")
 }

@@ -69,6 +69,20 @@ tasks:
     desc: VHS Tape Cleanup
     cmd: rm -rf "$HOME/backup/bup"
 
+  vhs-setup:
+    desc: VHS Tape Cleanup
+    cmd: |
+      rm -rf "$HOME/backup/bup"
+      mkdir -p "$HOME/backup"
+      cat > bup.yaml << EOF
+      clipboard: false
+      destination: $HOME/backup
+      excludes:
+        - dist
+        - out
+        - '*.exe'
+      EOF
+
   test:
     if: test ! -d dist/PathMgr
     #preconditions:

@@ -119,10 +119,37 @@ jobs:
           mkdir -p "${{ env.image-dir }}"
           echo aws s3 cp "${{ env.image }}" "s3://${{ env.bucket }}/${{ env.target }}"
 
-      - name: "Install Release"
-        uses: jaxxstorm/action-install-gh-release@v1.10.0
+      #- name: "Install Release"
+      #  if: ${{ inputs.publish }}
+      #  uses: jaxxstorm/action-install-gh-release@v1.10.0
+      #  with:
+      #    repo: ${{ github.repository }}
+
+      - name: "Setup Go"
+        #if: ${{ !inputs.publish }}
+        uses: actions/setup-go@v5
         with:
-          repo: ${{ github.repository }}
+          go-version-file: go.mod
+
+      - name: "Go Build"
+        #if: ${{ !inputs.publish }}
+        run: |
+          go build
+          stat bup
+          mkdir -p "${{ runner.temp }}/bin"
+          mv bup "${{ runner.temp }}/bin"
+          file "${{ runner.temp }}/bin/bup"
+          echo "${{ runner.temp }}/bin" >> "$GITHUB_PATH"
+
+      - name: "Debug"
+        #if: ${{ !inputs.publish }}
+        run: |
+          echo "::group::PATH"
+          echo "$PATH"
+          echo "::endgroup::"
+          which bup
+          bup --version
+          bup info
 
       - name: "Install VHS"
         uses: jaxxstorm/action-install-gh-release@v1.10.0
@@ -143,8 +170,11 @@ jobs:
           vhs --version
 
       - name: "Create VHS"
+        env:
+          CI: ""
+          TERM: xterm-256color
+          COLORTERM: truecolor
         run: |
-          export PATH="${PATH}:${HOME}/bin"
           vhs "${{ env.tape }}"
 
       - name: "Debug VHS"

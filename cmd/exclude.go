@@ -7,7 +7,7 @@ import (
 )
 
 var excludeCmd = &cobra.Command{
-	Use:     "exclude add/remove [name]",
+	Use:     "exclude add/remove name",
 	Aliases: []string{"e", "ex", "exc"},
 	Short:   "Show, add or remove excludes",
 	Long:    "Show, add or remove excludes.",

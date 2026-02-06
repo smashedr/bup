@@ -7,7 +7,7 @@ import (
 )
 
 var infoCmd = &cobra.Command{
-	Use:     "info [name]",
+	Use:     "info",
 	Aliases: []string{"i", "in", "inf"},
 	Short:   "Show information about application",
 	Long:    "Show information about application.",
