@@ -144,6 +144,13 @@ jobs:
           file "${{ runner.temp }}/bin/bup"
           echo "${{ runner.temp }}/bin" >> "$GITHUB_PATH"
 
+      - name: "Write Config"
+        uses: teunmooij/yaml@v1
+        with:
+          to-file: "bup.yaml"
+          data: |
+            {"destination": "${{ runner.temp }}/backup"}
+
       - name: "Debug"
         #if: ${{ !inputs.publish }}
         run: |
@@ -153,6 +160,7 @@ jobs:
           which bup
           bup --version
           bup info
+          mkdir -p "${{ runner.temp }}/backup"
 
       - name: "Install VHS"
         uses: jaxxstorm/action-install-gh-release@v1.10.0
