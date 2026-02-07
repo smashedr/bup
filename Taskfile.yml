@@ -79,6 +79,14 @@ tasks:
         - '*.exe'
       EOF
 
+  install:
+    platforms: [linux, darwin]
+    cmd: |
+      go build
+      sudo mv bup /usr/local/bin/bup
+      which bup
+      bup -V
+
   test:
     if: test ! -d dist/PathMgr
     #preconditions:

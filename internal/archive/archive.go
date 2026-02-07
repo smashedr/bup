@@ -3,6 +3,7 @@ package archive
 import (
 	"archive/zip"
 	"fmt"
+	"github.com/charmbracelet/log"
 	"io"
 	"os"
 	"path/filepath"
@@ -29,7 +30,7 @@ func CreateZipArchive(excludes []string, source, zipFilename string) error {
 		if err != nil {
 			return err
 		}
-		//fmt.Printf("%s: %s\n", info.Name(), path)
+		log.Debug("filepath.Walk", "info.Name()", info.Name(), "path", path)
 
 		//isExcluded := excludeMap[info.Name()]
 		isExcluded := false
@@ -46,14 +47,14 @@ func CreateZipArchive(excludes []string, source, zipFilename string) error {
 
 		if info.IsDir() {
 			if isExcluded {
-				fmt.Printf("SkipDir: %s\n", path)
+				log.Infof("SkipDir: %v", path)
 				return filepath.SkipDir
 			}
 			// Don't add directory entries to zip, they're created automatically
 			return nil
 		}
 		if isExcluded {
-			fmt.Printf("Exclude: %s\n", path)
+			log.Infof("Exclude: %v", path)
 			return nil
 		}
 

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -14,17 +15,18 @@ var listCmd = &cobra.Command{
 	Short:   "List backups for a given name",
 	Long:    "List all backups or backups for specified name.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("--------------------\n")
-		//fmt.Printf("args: %s\n", args)
+		log.Debug("listCmd:", "args", args)
+
 		destination := viper.GetString("destination")
-		fmt.Printf("Destination: %s\n", destination)
 
 		if len(args) == 0 {
+			fmt.Printf("Destination: %s\n", destination)
 			fmt.Println("--- All Backups ---")
 			listDir(destination)
 		} else {
 			for i := 0; i < len(args); i++ {
 				path := filepath.Join(destination, args[i])
+				fmt.Printf("Destination: %s\n", path)
 				fmt.Printf("--- %s ---\n", args[i])
 				listDir(path)
 			}

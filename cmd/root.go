@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -10,6 +11,7 @@ import (
 
 var (
 	cfgFile string
+	verbose int
 )
 
 var rootCmd = &cobra.Command{
@@ -32,14 +34,17 @@ func Execute() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(onInitialize)
 	rootCmd.PersistentFlags().BoolP("yes", "y", false, "answer yes to confirmations")
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file [default: ~/.config/bup.yaml]")
+	rootCmd.PersistentFlags().CountVarP(&verbose, "verbose", "v", "verbose output (-vvv debug)")
 	rootCmd.Flags().BoolP("version", "V", false, "version for bup")
 }
 
-func initConfig() {
-	//fmt.Printf("initConfig: cfgFile: %s\n", cfgFile)
+func onInitialize() {
+	initLogger(verbose)
+	log.Info("Log Level", "verbose", verbose)
+
 	//viper.SetEnvPrefix("bup")
 	viper.SetDefault("clipboard", true)
 	viper.SetDefault("excludes", []string{
@@ -54,14 +59,14 @@ func initConfig() {
 	})
 
 	// Provided Config
+	log.Debug("onInitialize", "cfgFile", cfgFile)
 	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
 		err := viper.ReadInConfig()
 		if err != nil {
-			fmt.Printf("Unable to read config file: %s\n\n", viper.ConfigFileUsed())
-			os.Exit(1)
+			log.Fatalf("Unable to read config file: %v", viper.ConfigFileUsed())
 		}
-		fmt.Printf("Config File: %s\n", cfgFile)
+		log.Infof("Config File: %v", cfgFile)
 		return
 	}
 
@@ -81,19 +86,37 @@ func initConfig() {
 		if err != nil {
 			homeDir = "."
 		}
-		fmt.Printf("homeDir: %s\n", homeDir)
+		log.Debugf("homeDir: %v", homeDir)
 		configPath := filepath.Join(homeDir, ".config")
-		//fmt.Printf("configPath: %s\n", configPath)
+		log.Debugf("configPath: %v", configPath)
 		_ = os.MkdirAll(configPath, 0755)
 		configFile := filepath.Join(configPath, "bup.yaml")
-		//fmt.Printf("configFile: %s\n", configFile)
+		log.Debugf("configFile: %v", configFile)
 		viper.SetConfigFile(configFile)
 		_ = viper.SafeWriteConfigAs(configFile)
 		if err := viper.ReadInConfig(); err != nil {
-			fmt.Printf("Error reading config: %s\nUsing Default Config!", configFile)
+			log.Fatalf("Error reading config: %s\nUsing Default Config!", configFile)
 		}
-		fmt.Printf("Config File: %s\n", configFile)
+		log.Infof("Config File: %v", configFile)
 	} else {
-		fmt.Printf("Config File: %s\n", viper.ConfigFileUsed())
+		log.Infof("Config File: %v", viper.ConfigFileUsed())
+	}
+}
+
+func initLogger(verbosity int) {
+	log.SetReportCaller(verbosity >= 3)
+	log.SetReportTimestamp(verbosity >= 3)
+	log.SetTimeFormat("15:04:05")
+	//log.SetPrefix("bup")
+
+	switch verbosity {
+	case 0:
+		log.SetLevel(log.WarnLevel) // Default
+	case 1:
+		log.SetLevel(log.InfoLevel) // -v
+	case 2:
+		log.SetLevel(log.DebugLevel) // -vv
+	default:
+		log.SetLevel(log.DebugLevel) // -vvv+
 	}
 }
