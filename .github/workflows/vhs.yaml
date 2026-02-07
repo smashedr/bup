@@ -176,6 +176,10 @@ jobs:
           sudo apt install -y ffmpeg ttyd
           echo "::endgroup::"
 
+          echo "::group::xvfb" # for clipboard only
+          sudo apt-get install -y libx11-dev xvfb
+          echo "::endgroup::"
+
           ffmpeg -version
           ttyd --version
           vhs --version
@@ -186,7 +190,7 @@ jobs:
           TERM: xterm-256color
           COLORTERM: truecolor
         run: |
-          vhs "${{ env.tape }}"
+          xvfb-run --auto-servernum vhs "${{ env.tape }}"
 
       - name: "Debug VHS"
         run: |
