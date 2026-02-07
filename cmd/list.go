@@ -53,11 +53,11 @@ func listDir(path, header string) {
 
 func renderTable(rows [][]string, headers ...string) {
 	headerStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("6")).
+		Foreground(lipgloss.Color("#bd93f9")).
 		Bold(true).
 		Align(lipgloss.Center)
 	borderStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("4")).
+		Foreground(lipgloss.Color("#7571f9")).
 		Bold(true)
 	t := table.New().
 		Border(lipgloss.RoundedBorder()).
