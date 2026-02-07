@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/charmbracelet/huh"
+	"github.com/charmbracelet/log"
 	"github.com/smashedr/bup/internal/archive"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -20,7 +21,8 @@ var backupCmd = &cobra.Command{
 	Long:    "Creates a zip archive of the source in the destination with a timestamp filename.",
 	Args:    cobra.RangeArgs(0, 2),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("--------------------\n")
+		log.Debug("backupCmd:", "args", args)
+
 		var source, destination string
 		if len(args) == 2 {
 			source = args[0]
@@ -45,7 +47,7 @@ var backupCmd = &cobra.Command{
 		//		excludes = append(excludes, strings.TrimSpace(part))
 		//	}
 		//}
-		fmt.Printf("Excludes: %s\n", excludes)
+		log.Infof("Excludes: %v", excludes)
 
 		if destination == "" {
 			destination = promptForDestination()
@@ -53,12 +55,12 @@ var backupCmd = &cobra.Command{
 
 		sourceInfo, err := os.Stat(source)
 		if err != nil || !sourceInfo.IsDir() {
-			fmt.Printf("Error: inalid source: %s\n", source)
+			log.Errorf("Error: inalid source: %v", source)
 			return
 		}
 		destInfo, err := os.Stat(destination)
 		if err != nil || !destInfo.IsDir() {
-			fmt.Printf("Error: inalid destination: %s\n", destination)
+			log.Errorf("Error: inalid destination: %v", destination)
 			return
 		}
 
@@ -81,14 +83,14 @@ var backupCmd = &cobra.Command{
 			viper.Set("destination", destPath)
 			err := viper.WriteConfig()
 			if err != nil {
-				fmt.Printf("Error Saving Config: %s\n", err)
+				log.Warnf("Error Saving Config: %v", err)
 			} else {
-				fmt.Printf("Saved Default Destination: %s\n", destPath)
+				fmt.Printf("Set Default Destination: %v\n", destPath)
 			}
 		}
 
 		noConfirm, _ := cmd.Flags().GetBool("yes")
-		fmt.Printf("Skip Confirmation: %v\n", noConfirm)
+		log.Infof("Skip Confirmation: %v", noConfirm)
 
 		fmt.Printf("Source: %s\n", sourcePath)
 		fmt.Printf("Destination: %s\n", destPath)
@@ -100,7 +102,8 @@ var backupCmd = &cobra.Command{
 				Title("Proceed?").
 				Affirmative("Yes.").
 				Negative("No!").
-				Value(&confirm)
+				Value(&confirm).
+				WithTheme(huh.ThemeDracula())
 			err := form.Run()
 			if err != nil {
 				fmt.Printf("prompt error: %v\n", err)
@@ -114,7 +117,7 @@ var backupCmd = &cobra.Command{
 
 		fullDestPath := filepath.Join(destPath, sourceName)
 		if err := os.MkdirAll(fullDestPath, 0755); err != nil {
-			fmt.Printf("Error creating directory: %v\n", err)
+			log.Errorf("Error creating directory: %v", err)
 			os.Exit(1)
 		}
 		fmt.Printf("Directory: %s\n", fullDestPath)
@@ -122,21 +125,19 @@ var backupCmd = &cobra.Command{
 		// Create timestamp filename
 		timestamp := time.Now().Format("06-01-02-15-04-05") // YY-MM-DD-HH-MM-SS
 		zipFileName := timestamp + ".zip"
-		fmt.Printf("zipFileName: %s\n", zipFileName)
+		fmt.Printf("File Name: %s\n", zipFileName)
 		zipFilePath := filepath.Join(fullDestPath, zipFileName)
-		fmt.Printf("zipFilePath: %s\n", zipFilePath)
+		fmt.Printf("File Path: %s\n", zipFilePath)
 
 		if err := archive.CreateZipArchive(excludes, sourcePath, zipFilePath); err != nil {
-			fmt.Printf("Error creating archive: %v\n", err)
-			os.Exit(1)
+			log.Fatalf("Error creating archive: %v", err)
 		}
 
 		copyToClipboard := viper.GetBool("clipboard")
-		fmt.Printf("copyToClipboard: %v\n", copyToClipboard)
+		log.Infof("copyToClipboard: %v", copyToClipboard)
 		if copyToClipboard {
 			if err := clipboard.Init(); err != nil {
-				//fmt.Printf("%v\n", err)
-				fmt.Printf("Clipboard not available.\n")
+				log.Warnf("Clipboard not available.")
 			} else {
 				clipboard.Write(clipboard.FmtText, []byte(zipFilePath))
 			}
@@ -144,7 +145,7 @@ var backupCmd = &cobra.Command{
 
 		fileInfo, err := os.Stat(zipFilePath)
 		if err != nil {
-			fmt.Printf("Error getting archive info: %v", err)
+			log.Warnf("Error getting archive info: %v", err)
 		} else {
 			fmt.Printf("Archive Size: %s\n", formatBytes(fileInfo.Size()))
 		}
@@ -180,18 +181,19 @@ func promptForDestination() string {
 		Title("Enter full path to backup directory.").
 		Prompt("> ").
 		Validate(validate).
-		Value(&result)
+		Value(&result).
+		WithTheme(huh.ThemeDracula())
 	err := form.Run()
 	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
+		log.Errorf("Prompt failed %v", err)
 		return ""
 	}
-	fmt.Printf("You choose %q\n", result)
+	log.Infof("Result: %q", result)
 	absPath, err := filepath.Abs(result)
 	if err != nil {
 		return ""
 	}
-	fmt.Printf("absPath %q\n", absPath)
+	log.Infof("absPath %q", absPath)
 	return absPath
 }
 
