@@ -118,6 +118,19 @@ jobs:
         run: |
           ls dist
 
+      - name: "Set Installer Version"
+        if: ${{ github.event_name == 'release' }}
+        continue-on-error: true
+        run: |
+          $string = "BackUP Installer"
+          $file = "assets\pre-install.rtf"
+          $content = Get-Content -Path $file -Raw
+          $content = $content -replace $string, "$string v${{ github.ref_name }}"
+          Set-Content -Path $file -Value $content -NoNewline
+          Write-Output "::group::Content"
+          Write-Output $content
+          Write-Output "::endgroup::"
+
       - name: "Inno Setup"
         run: |
           echo "Building Version: ${{ github.ref_name }}"

@@ -28,15 +28,21 @@ in a sub-folder with the `name` of the `source` directory and a timestamped file
 
 --8<-- "docs/snippets/install.md"
 
+---
+
 Remembers your `destination` directory and uses the current directory as `source` by default.
 
 Supports directory excludes stored in the config file with the saved destination.
 
-To get started see the [Quick Start](#quick-start) section or check out the [Features](#features).
+To get started check out the [Features](#features), [Install](#install) the app and view the [Usage](#usage).
 
 If you run into any issues or have any questions, [support](support.md) is available.
 
-[![VHS Tape](https://cssnr.s3.amazonaws.com/bup/demo.gif)](#quick-start)
+## :lucide-terminal: Demo
+
+[![VHS Tape](https://cssnr.s3.amazonaws.com/bup/demo.gif)](#install)
+
+:lucide-videotape: This demo was generated with [charmbracelet/vhs](https://github.com/charmbracelet/vhs).
 
 ## :lucide-sparkles: Features
 
@@ -47,33 +53,33 @@ If you run into any issues or have any questions, [support](support.md) is avail
 - Creates a timestamped archive
 - Puts archives in named directory
 
-## :lucide-plane-takeoff: Quick Start
-
-Install.
+## :lucide-plane-takeoff: Install
 
 --8<-- "docs/snippets/install.md"
 
-Usage.
+[![Latest Release](https://img.shields.io/github/v/release/smashedr/bup?style=for-the-badge&logo=github&label=latest%20version)](https://github.com/smashedr/bup/releases/latest)
 
-- Specify `source` and `destination`
+## :lucide-square-terminal: Usage
+
+Specify `source` and `destination`
 
 ```shell
 bup backup [source] [destination]
 ```
 
-- Use the `b` alias, `$pwd` source, and saved `destination`
+Use the `b` alias, `$pwd` source, and saved `destination`
 
 ```shell
 bup b
 ```
 
-- The `list` command list backups by name
+The `list` command list backups by name
 
 ```shell
 bup l
 ```
 
-- The `info` command prints the configuration
+The `info` command prints the configuration
 
 ```shell
 bup i
