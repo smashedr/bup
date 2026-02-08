@@ -20,5 +20,5 @@
     go install github.com/smashedr/bup@latest
     ```
 
-:fontawesome-brands-windows: Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).  
-:lucide-download: Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
+:fontawesome-brands-windows: Windows users can download the [Windows&nbsp;Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).  
+:lucide-download: Alternatively, you can manually [download&nbsp;a&nbsp;release](https://github.com/smashedr/bup/releases).
