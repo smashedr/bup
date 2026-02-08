@@ -3,13 +3,12 @@
 Type "bup backup ."
 Sleep 0.5s
 Enter
-Wait /Yes./
+Wait /Yes\./
 Sleep 1s
 Right
 Sleep 0.4s
 Left
 Sleep 0.4s
-
 Enter
 Sleep 3s
 

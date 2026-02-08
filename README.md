@@ -70,25 +70,25 @@ go install github.com/smashedr/bup@latest
 
 ## Usage
 
-- Specify `source` and `destination`
+Specify `source` and `destination`
 
 ```shell
 bup backup [source] [destination]
 ```
 
-- Use the `b` alias, `$pwd` source, and saved `destination`
+Use the `b` alias, `$pwd` source, and saved `destination`
 
 ```shell
 bup b
 ```
 
-- The `list` command list backups by name
+The `list` command list backups by name
 
 ```shell
 bup l
 ```
 
-- The `info` command prints the configuration
+The `info` command prints the configuration
 
 ```shell
 bup i
