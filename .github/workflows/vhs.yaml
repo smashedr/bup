@@ -6,11 +6,11 @@ on:
       demo:
         description: Demo Tape
         type: boolean
-        default: false
+        default: true
       banner:
         description: Banner Tape
         type: boolean
-        default: false
+        default: true
       publish:
         description: Publish Tapes
         type: boolean
