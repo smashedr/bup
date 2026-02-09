@@ -32,23 +32,6 @@ archives:
       - goos: windows
         formats: [zip]
 
-## https://goreleaser.com/customization/dockers_v2/
-#dockers_v2:
-#  - images:
-#      - "ghcr.io/smashedr/{{ .ProjectName }}"
-#    tags:
-#      - "{{ if .Prerelease }}prerelease{{ else }}latest{{ end }}"
-#      - "{{ .Version }}"
-#    labels:
-#      "org.opencontainers.image.description": "Back UP CLI written in Go."
-#      "org.opencontainers.image.created": "{{ .Date }}"
-#      "org.opencontainers.image.name": "{{ .ProjectName }}"
-#      "org.opencontainers.image.title": "{{ .ProjectName }}"
-#      "org.opencontainers.image.revision": "{{ .FullCommit }}"
-#      "org.opencontainers.image.version": "{{ .Version }}"
-#      "org.opencontainers.image.source": "{{ .GitURL }}"
-#    disable: "{{ or .IsSnapshot .Prerelease }}"
-
 # https://goreleaser.com/customization/homebrew_formulas/
 brews:
   - repository:
@@ -65,6 +48,23 @@ brews:
     caveats: |
       View the Documentation:
       https://smashedr.github.io/bup/
+
+## https://goreleaser.com/customization/dockers_v2/
+#dockers_v2:
+#  - images:
+#      - "ghcr.io/smashedr/{{ .ProjectName }}"
+#    tags:
+#      - "{{ if .Prerelease }}prerelease{{ else }}latest{{ end }}"
+#      - "{{ .Version }}"
+#    labels:
+#      "org.opencontainers.image.description": "Back UP CLI written in Go."
+#      "org.opencontainers.image.created": "{{ .Date }}"
+#      "org.opencontainers.image.name": "{{ .ProjectName }}"
+#      "org.opencontainers.image.title": "{{ .ProjectName }}"
+#      "org.opencontainers.image.revision": "{{ .FullCommit }}"
+#      "org.opencontainers.image.version": "{{ .Version }}"
+#      "org.opencontainers.image.source": "{{ .GitURL }}"
+#    disable: "{{ or .IsSnapshot .Prerelease }}"
 
 # https://goreleaser.com/customization/release/
 release:

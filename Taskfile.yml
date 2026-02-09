@@ -39,34 +39,40 @@ tasks:
       zensical serve --open
 
   inno:
-    aliases: [setup]
     desc: Inno Setup
+    aliases: [setup]
+    deps: [pathmgr]
     cmd: iscc.exe installer.iss
 
   pathmgr:
     desc: Download PathMgr
-    preconditions:
-      - sh: test ! -d dist/PathMgr
-        msg: "Already downloaded to: dist/PathMgr"
+    if: test ! -d dist/PathMgr
     cmd: |
       mkdir -p dist
       wget https://github.com/Bill-Stewart/PathMgr/releases/download/v2.0.0/PathMgr-2.0.0.zip -O dist/pathmgr.zip
       unzip dist/pathmgr.zip -d dist/PathMgr
 
+  install:
+    platforms: [linux, darwin]
+    cmd: |
+      go build
+      sudo mv bup /usr/local/bin/bup
+      which bup
+      bup -V
+
   vhs:
     desc: Create VHS Tape
+    deps: [gen-config]
     vars:
       TAPE_FILE: '{{.CLI_ARGS | default "demo"}}'
-    preconditions:
-      - sh: test -f bup.yaml
-        msg: "First run: task vhs-setup"
     cmd: |
-      echo "Creating Tape - assets/{{.TAPE_FILE}}.tape"
       rm -rf "$HOME/backup/bup"
+      echo "Creating Tape - assets/{{.TAPE_FILE}}.tape"
       vhs "assets/{{.TAPE_FILE}}.tape"
 
-  vhs-setup:
-    desc: VHS Tape Cleanup
+  gen-config:
+    desc: Generate Config File
+    if: test ! -f bup.yaml
     cmd: |
       rm -rf "$HOME/backup/bup"
       mkdir -p "$HOME/backup"
@@ -78,20 +84,3 @@ tasks:
         - out
         - '*.exe'
       EOF
-
-  install:
-    platforms: [linux, darwin]
-    cmd: |
-      go build
-      sudo mv bup /usr/local/bin/bup
-      which bup
-      bup -V
-
-  test:
-    if: test ! -d dist/PathMgr
-    #preconditions:
-    #  - sh: test ! -d dist/PathMgr
-    #    msg: "Already downloaded to: dist/PathMgr"
-    desc: Test Command
-    cmd: |
-      echo "Taskfile.yaml test Successful (no test was run)..."

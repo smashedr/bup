@@ -116,7 +116,7 @@ jobs:
 
       - name: "Debug Artifacts"
         run: |
-          ls dist
+          ls -Recurse dist
 
       - name: "Set Installer Version"
         if: ${{ github.event_name == 'release' }}
@@ -138,7 +138,7 @@ jobs:
 
       - name: "Debug Output"
         run: |
-          ls "${{ env.output }}"
+          ls -Recurse "${{ env.output }}"
 
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v6
@@ -208,7 +208,7 @@ jobs:
     if: ${{ always() }}
     runs-on: Ubuntu-latest
     timeout-minutes: 5
-    needs: [release]
+    needs: [build, windows, release]
 
     permissions:
       contents: write
@@ -228,7 +228,7 @@ jobs:
         run: |
           echo -e "\n## Cleanup Release\n\n" >> "$GITHUB_STEP_SUMMARY"
           echo -e "Deleting Release and Tag: \`${{ github.ref_name }}\`\n\n" >> "$GITHUB_STEP_SUMMARY"
-          if gh release delete "${{ github.ref_name }}" --cleanup-tag;then
+          if gh release delete "${{ github.ref_name }}" --repo "${{ github.repository }}" --cleanup-tag;then
             echo -e "✅ Cleanup Success.\n" >> "$GITHUB_STEP_SUMMARY"
           else
             echo -e "⛔ Cleanup Failed!\n" >> "$GITHUB_STEP_SUMMARY"
