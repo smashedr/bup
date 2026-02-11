@@ -23,8 +23,18 @@
 === ":simple-go: source"
 
     ```shell
-    go install github.com/smashedr/bup@latest
+    go install github.com/smashedr/bup@latest  # (1)!
     ```
+
+    1. Requires Go: <https://go.dev/doc/install>
+
+=== ":simple-docker: docker"
+
+    ```shell
+    docker run --rm -itv ~/bin:/out ghcr.io/smashedr/ir:latest -b /out smashedr/bup  # (1)!
+    ```
+
+    1. _Note: Docker requires you to mount the target bin directory._
 
 :fontawesome-brands-windows: Windows users can download the [Windows&nbsp;Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).  
 :lucide-download: Alternatively, you can manually [download&nbsp;a&nbsp;release](https://github.com/smashedr/bup/releases).
