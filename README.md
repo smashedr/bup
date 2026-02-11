@@ -62,7 +62,7 @@ Alternatively, you can manually [download a release](https://github.com/smashedr
 #### PowerShell
 
 ```powershell
-iex (iwr -useb 'https://raw.githubusercontent.com/smashedr/install-release/refs/heads/master/scripts/install.ps1').Content
+iex (iwr -useb 'https://raw.githubusercontent.com/smashedr/bup/refs/heads/master/scripts/install.ps1').Content
 ```
 
 Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).
