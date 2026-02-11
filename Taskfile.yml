@@ -6,6 +6,7 @@ env:
 
 tasks:
   goup:
+    aliases: [goget, tidy]
     cmd: |
       go get -u
       go mod tidy
@@ -53,22 +54,25 @@ tasks:
       unzip dist/pathmgr.zip -d dist/PathMgr
 
   install:
-    platforms: [linux, darwin]
     cmd: |
       go build
-      sudo mv bup /usr/local/bin/bup
+      mv bup "${HOME}/bin/bup"
       which bup
       bup -V
 
-  vhs:
+  vhs:*:
     desc: Create VHS Tape
-    deps: [gen-config]
+    deps: [rm-backups, gen-config]
     vars:
-      TAPE_FILE: '{{.CLI_ARGS | default "demo"}}'
+      TAPE_FILE: '{{index .MATCH 0 | default "demo"}}'
     cmd: |
-      rm -rf "$HOME/backup/bup"
       echo "Creating Tape - assets/{{.TAPE_FILE}}.tape"
       vhs "assets/{{.TAPE_FILE}}.tape"
+
+  rm-backups:
+    desc: Remove bup backups
+    cmd: |
+      rm -rf "$HOME/backup/bup"
 
   gen-config:
     desc: Generate Config File

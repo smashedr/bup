@@ -2,17 +2,19 @@ name: "VHS Tape"
 
 on:
   workflow_dispatch:
-    inputs: &inputs
+    inputs:
+      demo:
+        description: Demo Tape
+        type: boolean
+        default: true
+      banner:
+        description: Banner Tape
+        type: boolean
+        default: true
       publish:
         description: Publish Tapes
         type: boolean
         default: false
-      #continue-on-error:
-      #  description: Continue on Error
-      #  type: boolean
-      #  default: true
-  workflow_call:
-    inputs: *inputs
 
 env:
   tape-dir: assets
@@ -21,15 +23,51 @@ env:
   bucket-path: bup
 
 jobs:
+  tapes:
+    name: "Tapes"
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v6
+
+      - name: "Create Matrix"
+        id: matrix
+        shell: python
+        run: |
+          import json
+          import os
+          inputs="""
+          ${{ toJSON(inputs) }}
+          """
+          data = json.loads(inputs)
+          print(f"{data=}")
+          del data['publish']
+          print(f"{data=}")
+          keys = [k for k in data if data[k]]
+          print(f"{keys=}")
+          matrix_json = json.dumps(keys)
+          print(f"{matrix_json=}")
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f"matrix={matrix_json}\n")
+
+      - name: "Debug Matrix"
+        continue-on-error: true
+        env:
+          matrix: ${{ steps.matrix.outputs.matrix }}
+        run: |
+          echo "${matrix}"
+
   vhs:
     name: "VHS ${{ matrix.tape }}"
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    #continue-on-error: ${{ inputs.continue-on-error }}
+    needs: tapes
     strategy:
       fail-fast: false
       matrix:
-        tape: [demo, banner]
+        tape: ${{ fromJSON(needs.tapes.outputs.matrix) }}
 
     permissions:
       contents: read
@@ -50,11 +88,12 @@ jobs:
         continue-on-error: true
         run: env
 
-      - name: "Set Inputs"
+      - name: "Debug Inputs"
+        #continue-on-error: true
         run: |
           echo github.repository: ${{ github.repository }}
-          echo github.ref_name: ${{ github.ref_name  }}
           echo github.event_name: ${{ github.event_name }}
+          echo github.ref_name: ${{ github.ref_name  }}
 
           echo matrix.tape: ${{ matrix.tape }}
 
@@ -63,27 +102,40 @@ jobs:
           echo env.bucket: ${{ env.bucket }}
           echo env.bucket-path: ${{ env.bucket-path }}
 
-          echo inputs.publish: ${{ inputs.publish }}
-
           echo "tape=${{ env.tape-dir }}/${{ matrix.tape }}.tape" >> "$GITHUB_ENV"
+          echo "image=${{ env.image-dir }}/${{ matrix.tape }}.gif" >> "$GITHUB_ENV"
+          echo "target=${{ env.bucket-path }}/${{ matrix.tape }}.gif" >> "$GITHUB_ENV"
 
-      - name: "Install Release"
-        if: ${{ github.event_name == 'workflow_call' }}
-        uses: jaxxstorm/action-install-gh-release@6096f2a2bbfee498ced520b6922ac2c06e990ed2 # v2.1.0
-        with:
-          repo: ${{ github.repository }}
+      - name: "Verify Inputs"
+        #continue-on-error: true
+        run: |
+          echo "env.tape: ${{ env.tape }}"
+          echo "env.image: ${{ env.image }}"
+          echo "env.target: ${{ env.target }}"
+          [ -n "${{ env.tape }}" ]
+          [ -n "${{ env.image }}" ]
+          [ -n "${{ env.target }}" ]
+          mkdir -p "${{ env.tape-dir }}"
+          mkdir -p "${{ env.image-dir }}"
+          echo aws s3 cp "${{ env.image }}" "s3://${{ env.bucket }}/${{ env.target }}"
+
+      #- name: "Install Release"
+      #  if: ${{ inputs.publish }}
+      #  uses: jaxxstorm/action-install-gh-release@v1.10.0
+      #  with:
+      #    repo: ${{ github.repository }}
 
       - name: "Install App Dependencies"
         run: sudo apt-get update && sudo apt-get install -y libx11-dev xvfb
 
       - name: "Setup Go"
-        if: ${{ github.event_name != 'workflow_call' }}
+        #if: ${{ !inputs.publish }}
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
 
       - name: "Go Build"
-        if: ${{ github.event_name != 'workflow_call' }}
+        #if: ${{ !inputs.publish }}
         run: |
           go build
           stat bup
@@ -137,19 +189,23 @@ jobs:
           xvfb-run --auto-servernum \
           vhs "${{ env.tape }}"
 
-      #- name: "Create APNG"
-      #  run: |
-      #    ffmpeg -i "${{ env.image-dir }}/*.gif output.png
-
       - name: "Debug VHS"
         run: |
-          ls -lAhR "${{ env.image-dir }}"
+          ls "${{ env.tape-dir }}"
+          file "${{ env.image }}"
 
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.tape }}
-          path: ${{ env.image-dir }}
+          path: ${{ env.image }}
+
+      - name: "Discord Webhook"
+        continue-on-error: true
+        uses: tsickert/discord-webhook@b217a69502f52803de774ded2b1ab7c282e99645 # v7.0.0
+        with:
+          webhook-url: ${{ secrets.DISCORD_WEBHOOK }}
+          filename: ${{ env.image }}
 
       - name: "Setup AWS"
         if: ${{ inputs.publish }}
@@ -163,52 +219,31 @@ jobs:
         if: ${{ inputs.publish }}
         id: upload
         run: |
-          for image in "${{ env.image-dir }}"/*; do
-            echo "Checking: $image"
-            [ ! -f "$image" ] && continue
-            if [[ "$image" == *.apng ]]; then
-              new_image="${image%.apng}.png"
-              echo "Renaming: $image -> $new_image"
-              mv "$image" "$new_image"
-              image="$new_image"
-            fi
-            filename="$(basename "$image")"
+          aws s3 cp "${{ env.image }}" "s3://${{ env.bucket }}/${{ env.target }}"
+          url="https://${{ env.bucket }}.s3.amazonaws.com/${{ env.target }}"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
 
-            destination="${{ env.bucket-path }}/${filename}"
-            echo "Uploading: $image -> $destination"
-            aws s3 cp "$image" "s3://${{ env.bucket }}/$destination"
-            url="https://${{ env.bucket }}.s3.amazonaws.com/$destination"
-            echo "url: $url"
-            echo "$url" >> "${{ runner.temp }}/results.txt"
-          done
-
-      - name: "Debug URLs"
+      - name: "Debug URL"
         if: ${{ inputs.publish }}
         continue-on-error: true
         run: |
-          cat -n "${{ runner.temp }}/results.txt"
+          echo "url: ${{ steps.upload.outputs.url }}"
 
       - name: "Job Summary"
         if: ${{ inputs.publish }}
         continue-on-error: true
         run: |
-          md="## 📼 VHS ${{ matrix.tape }}\n\n"
-          while IFS= read -r url; do
-            filename="$(basename "${url}")"
-            echo "Processing: $filename - $url"
-            md+="### ${filename}\n\n"
-            md+="<${url}>\n\n"
-            md+="\`\`\`text\n${url}\n\`\`\`\n\n"
-            md+="[![URL](${url})](${url})\n\n"
-            md+="---\n\n"
-          done < "${{ runner.temp }}/results.txt"
+          md="## VHS 📼 ${{ matrix.tape }}\n\n"
+          md+="<${{ steps.upload.outputs.url }}>\n\n"
+          md+="\`\`\`text\n${{ steps.upload.outputs.url }}\n\`\`\`\n\n"
+          md+="[![URL](${{ steps.upload.outputs.url }})](${{ steps.upload.outputs.url }})\n\n"
           echo -e "${md}" >> "$GITHUB_STEP_SUMMARY"
 
-      #- name: "Web Request"
-      #  if: ${{ inputs.publish }}
-      #  continue-on-error: true
-      #  uses: cssnr/web-request-action@v2
-      #  with:
-      #    url: ${{ secrets.DISCORD_WEBHOOK }}
-      #    data: |
-      #      content: "${{ steps.upload.outputs.url }}"
+      - name: "Web Request"
+        if: ${{ inputs.publish }}
+        continue-on-error: true
+        uses: cssnr/web-request-action@v2
+        with:
+          url: ${{ secrets.DISCORD_WEBHOOK }}
+          data: |
+            content: "${{ steps.upload.outputs.url }}"

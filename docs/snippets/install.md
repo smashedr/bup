@@ -4,15 +4,21 @@
     brew install cssnr/tap/bup
     ```
 
-=== ":simple-github: github"
+=== ":lucide-terminal-square: bash"
 
     ```shell
     curl https://i.jpillora.com/smashedr/bup! | bash  # (1)!
     ```
 
-    1.  Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).
+    1.  Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
 
-        Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
+=== ":lucide-terminal: powershell"
+
+    ```powershell
+    iex (iwr -useb 'https://raw.githubusercontent.com/smashedr/bup/refs/heads/master/scripts/install.ps1').Content  # (1)!
+    ```
+
+    1.  Windows users can download the [Windows Installer](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).
 
 === ":simple-go: source"
 
