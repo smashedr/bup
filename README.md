@@ -48,6 +48,9 @@ Supports directory excludes stored in the config file with the saved destination
 
 ## Install
 
+[![Latest Release](https://img.shields.io/github/v/release/smashedr/bup?logo=github&label=latest%20release)](https://github.com/smashedr/bup/releases)
+[![Windows Installer](https://img.shields.io/badge/download-windows--installer.exe-blue?logo=data:image/svg%2bxml;base64,PHN2ZyB3aWR0aD0iMjQ5MCIgaGVpZ2h0PSIyNTAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+PHBhdGggZD0iTTAgMzYuMzU3TDEwNC42MiAyMi4xMWwuMDQ1IDEwMC45MTQtMTA0LjU3LjU5NUwwIDM2LjM1OHptMTA0LjU3IDk4LjI5M2wuMDggMTAxLjAwMkwuMDgxIDIyMS4yNzVsLS4wMDYtODcuMzAyIDEwNC40OTQuNjc3em0xMi42ODItMTE0LjQwNUwyNTUuOTY4IDB2MTIxLjc0bC0xMzguNzE2IDEuMVYyMC4yNDZ6TTI1NiAxMzUuNmwtLjAzMyAxMjEuMTkxLTEzOC43MTYtMTkuNTc4LS4xOTQtMTAxLjg0TDI1NiAxMzUuNnoiIGZpbGw9IiMwMEFERUYiLz48L3N2Zz4=)](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe)
+
 #### Homebrew
 
 ```shell
@@ -60,7 +63,7 @@ brew install cssnr/tap/bup
 curl https://i.jpillora.com/smashedr/bup! | bash
 ```
 
-Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
+💾 Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
 
 #### PowerShell
 
@@ -68,7 +71,7 @@ Alternatively, you can manually [download a release](https://github.com/smashedr
 iex (iwr -useb 'https://raw.githubusercontent.com/smashedr/bup/refs/heads/master/scripts/install.ps1').Content
 ```
 
-Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).
+🪟 Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).
 
 #### Source
 
