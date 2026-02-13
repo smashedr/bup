@@ -64,25 +64,19 @@ If you run into any issues or have any questions, [support](support.md) is avail
 Specify `source` and `destination`.
 
 ```shell
-bup backup [source] [destination]
+bup [source] [destination]
 ```
 
-Use the `b` alias, current directory, and saved `destination`.
+The `--list` flag list backups by name.
 
 ```shell
-bup b
+bup -l
 ```
 
-The `list` command list backups by name.
+The `--info` flag prints the configuration.
 
 ```shell
-bup l
-```
-
-The `info` command prints the configuration.
-
-```shell
-bup i
+bup -i
 ```
 
 &nbsp;

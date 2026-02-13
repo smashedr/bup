@@ -94,25 +94,19 @@ _Note: Docker requires you to mount the target bin directory._
 Specify `source` and `destination`.
 
 ```shell
-bup backup [source] [destination]
-```
-
-Use the `b` alias, current directory, and saved `destination`.
-
-```shell
-bup b
+bup [source] [destination]
 ```
 
 The `list` command list backups by name.
 
 ```shell
-bup l
+bup -l
 ```
 
 The `info` command prints the configuration.
 
 ```shell
-bup i
+bup -i
 ```
 
 [![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)

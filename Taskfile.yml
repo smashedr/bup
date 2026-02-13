@@ -6,7 +6,7 @@ env:
 
 tasks:
   goup:
-    aliases: [goget, tidy]
+    aliases: [go, tidy]
     cmd: |
       go get -u
       go mod tidy
@@ -54,11 +54,13 @@ tasks:
       unzip dist/pathmgr.zip -d dist/PathMgr
 
   install:
+    vars:
+      TARGET_NAME: bup
     cmd: |
       go build
-      mv bup "${HOME}/bin/bup"
-      which bup
-      bup -V
+      mv {{.TARGET_NAME}} "${HOME}/bin/{{.TARGET_NAME}}"
+      which {{.TARGET_NAME}}
+      {{.TARGET_NAME}} -V
 
   vhs:*:
     desc: Create VHS Tape
@@ -88,3 +90,18 @@ tasks:
         - out
         - '*.exe'
       EOF
+
+  build:*:*:
+    desc: Build OS:ARCH
+    vars:
+      OS: "{{index .MATCH 0}}"
+      ARCH: "{{index .MATCH 1}}"
+    requires:
+      vars:
+        - name: OS
+          enum: [darwin, linux, windows]
+        - name: ARCH
+          enum: [amd64, arm64, "386"]
+    cmd: |
+      echo "Building: {{.OS}} / {{.ARCH}}"
+      GOOS={{.OS}} GOARCH={{.ARCH}} goreleaser build --snapshot --clean --single-target {{.CLI_ARGS}}

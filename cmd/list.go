@@ -11,24 +11,18 @@ import (
 	"path/filepath"
 )
 
-var listCmd = &cobra.Command{
-	Use:     "list [name]",
-	Aliases: []string{"l", "li", "lis", "ls"},
-	Short:   "List backups for a given name",
-	Long:    "List all backups or backups for specified name.",
-	Run: func(cmd *cobra.Command, args []string) {
-		log.Debug("listCmd:", "args", args)
+func listCmd(cmd *cobra.Command, args []string) {
+	log.Debug("listCmd:", "args", args)
 
-		destination := viper.GetString("destination")
-		if len(args) == 0 {
-			listDir(destination, "All Backups")
-		} else {
-			for i := 0; i < len(args); i++ {
-				path := filepath.Join(destination, args[i])
-				listDir(path, args[i])
-			}
+	destination := viper.GetString("destination")
+	if len(args) == 0 {
+		listDir(destination, "All Backups")
+	} else {
+		for i := 0; i < len(args); i++ {
+			path := filepath.Join(destination, args[i])
+			listDir(path, args[i])
 		}
-	},
+	}
 }
 
 func listDir(path, header string) {
@@ -71,8 +65,4 @@ func renderTable(rows [][]string, headers ...string) {
 		Headers(headers...).
 		Rows(rows...)
 	fmt.Println(t)
-}
-
-func init() {
-	rootCmd.AddCommand(listCmd)
 }
