@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/charmbracelet/log"
+	"github.com/confluentinc/go-editor"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -21,22 +22,26 @@ var rootCmd = &cobra.Command{
 	Args:  cobra.ArbitraryArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Debug("rootCmd:", "args", args)
+		editFlag, _ := cmd.Flags().GetBool("edit")
 		infoFlag, _ := cmd.Flags().GetBool("info")
-		log.Info("Flags:", "infoFlag", infoFlag)
 		listFlag, _ := cmd.Flags().GetBool("list")
-		log.Info("Flags:", "listFlag", listFlag)
+		log.Info("Flags:", "edit", editFlag, "info", infoFlag, "list", listFlag)
 
-		if infoFlag {
+		switch {
+		case infoFlag:
 			infoCmd(cmd, args)
-			return
-		}
-
-		if listFlag {
+		case listFlag:
 			listCmd(cmd, args)
-			return
+		case editFlag:
+			file := viper.ConfigFileUsed()
+			log.Infof("viper.ConfigFileUsed(): %v", file)
+			edit := editor.NewEditor()
+			if err := edit.Launch(file); err != nil {
+				log.Fatal(err)
+			}
+		default:
+			backupCmd(cmd, args)
 		}
-
-		backupCmd(cmd, args)
 	},
 }
 
@@ -53,11 +58,13 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(onInitialize)
-	rootCmd.PersistentFlags().BoolP("yes", "y", false, "answer yes to confirmations")
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file [default: ~/.config/bup.yaml]")
-	rootCmd.PersistentFlags().CountVarP(&verbose, "verbose", "v", "verbose output (-vvv debug)")
+	rootCmd.Flags().BoolP("yes", "y", false, "answer yes to confirmations")
+	rootCmd.Flags().StringVar(&cfgFile, "config", "", "config file [default: ~/.config/bup.yaml]")
+	rootCmd.Flags().CountVarP(&verbose, "verbose", "v", "verbose output (-vvv debug)")
+	rootCmd.Flags().StringSliceP("exclude", "e", []string{}, "inline pattern to exclude")
+	rootCmd.Flags().BoolP("edit", "E", false, "edit config in default editor")
+	rootCmd.Flags().BoolP("info", "I", false, "information about bup")
 	rootCmd.Flags().BoolP("list", "l", false, "list backups")
-	rootCmd.Flags().BoolP("info", "i", false, "information about bup")
 	rootCmd.Flags().BoolP("version", "V", false, "version for bup")
 }
 

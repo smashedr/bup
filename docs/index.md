@@ -67,16 +67,22 @@ Specify `source` and `destination`.
 bup [source] [destination]
 ```
 
-The `--list` flag list backups by name.
+Use `--list` to list backups.
 
 ```shell
-bup -l
+bup -l [name]
 ```
 
-The `--info` flag prints the configuration.
+Use `--info` to prints the configuration.
 
 ```shell
 bup -i
+```
+
+Use `--edit` to open the config in an editor.
+
+```shell
+bup -e
 ```
 
 &nbsp;
