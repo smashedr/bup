@@ -1,34 +1,26 @@
 package cmd
 
 import (
-	"fmt"
-	"github.com/charmbracelet/lipgloss"
-	"github.com/charmbracelet/lipgloss/table"
 	"github.com/charmbracelet/log"
+	"github.com/smashedr/bup/internal/styles"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
 	"path/filepath"
 )
 
-var listCmd = &cobra.Command{
-	Use:     "list [name]",
-	Aliases: []string{"l", "li", "lis", "ls"},
-	Short:   "List backups for a given name",
-	Long:    "List all backups or backups for specified name.",
-	Run: func(cmd *cobra.Command, args []string) {
-		log.Debug("listCmd:", "args", args)
+func listCmd(cmd *cobra.Command, args []string) {
+	log.Debug("listCmd:", "args", args)
 
-		destination := viper.GetString("destination")
-		if len(args) == 0 {
-			listDir(destination, "All Backups")
-		} else {
-			for i := 0; i < len(args); i++ {
-				path := filepath.Join(destination, args[i])
-				listDir(path, args[i])
-			}
+	destination := viper.GetString("destination")
+	if len(args) == 0 {
+		listDir(destination, "All Backups")
+	} else {
+		for i := 0; i < len(args); i++ {
+			path := filepath.Join(destination, args[i])
+			listDir(path, args[i])
 		}
-	},
+	}
 }
 
 func listDir(path, header string) {
@@ -48,31 +40,5 @@ func listDir(path, header string) {
 		rows = append(rows, []string{e.Name()})
 	}
 	log.Debugf("rows: %v", rows)
-	renderTable(rows, header)
-}
-
-func renderTable(rows [][]string, headers ...string) {
-	headerStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#bd93f9")).
-		Bold(true).
-		Align(lipgloss.Center)
-	borderStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("#7571f9")).
-		Bold(true)
-	t := table.New().
-		Border(lipgloss.RoundedBorder()).
-		BorderStyle(borderStyle).
-		StyleFunc(func(row, col int) lipgloss.Style {
-			if row == table.HeaderRow {
-				return headerStyle
-			}
-			return lipgloss.NewStyle()
-		}).
-		Headers(headers...).
-		Rows(rows...)
-	fmt.Println(t)
-}
-
-func init() {
-	rootCmd.AddCommand(listCmd)
+	styles.RenderTable(rows, header)
 }

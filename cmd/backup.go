@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"github.com/charmbracelet/huh"
 	"github.com/charmbracelet/log"
+	"github.com/dustin/go-humanize"
 	"github.com/smashedr/bup/internal/archive"
+	"github.com/smashedr/bup/internal/styles"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"golang.design/x/clipboard"
@@ -14,144 +16,122 @@ import (
 	"time"
 )
 
-var backupCmd = &cobra.Command{
-	Use:     "backup [source] [destination]",
-	Aliases: []string{"b", "bu", "bup"},
-	Short:   "Backup source to destination as zip",
-	Long:    "Creates a zip archive of the source in the destination with a timestamp filename.",
-	Args:    cobra.RangeArgs(0, 2),
-	Run: func(cmd *cobra.Command, args []string) {
-		log.Debug("backupCmd:", "args", args)
+func backupCmd(cmd *cobra.Command, args []string) {
+	log.Debug("backupCmd:", "args", args)
 
-		var source, destination string
-		if len(args) == 2 {
-			source = args[0]
-			destination = args[1]
-		} else if len(args) == 1 {
-			source = args[0]
-			destination = viper.GetString("destination")
+	// Parse Source/Destination
+	var source, destination string
+	if len(args) == 2 {
+		source = args[0]
+		destination = args[1]
+	} else if len(args) == 1 {
+		source = args[0]
+		destination = viper.GetString("destination")
+	} else {
+		source = "."
+		destination = viper.GetString("destination")
+	}
+	if destination == "" {
+		destination = promptForDestination()
+	}
+	log.Debug("Args", "source", source, "destination", destination)
+
+	// Validate Source
+	sourceInfo, err := os.Stat(source)
+	sourcePath, _ := filepath.Abs(source)
+	sourceName := filepath.Base(sourcePath)
+	if err != nil || !sourceInfo.IsDir() {
+		log.Fatalf("Inalid source: %v", source)
+	}
+	log.Debug("Source", "sourcePath", sourcePath, "sourceName", sourceName)
+
+	// Validate Destination
+	destInfo, err := os.Stat(destination)
+	destPath, _ := filepath.Abs(destination)
+	if err != nil || !destInfo.IsDir() {
+		log.Fatalf("Inalid destination: %v", destination)
+	}
+	log.Debug("Destination", "destPath", destPath)
+
+	// Ensure Default Destination is Set
+	if viper.GetString("destination") == "" {
+		viper.Set("destination", destPath)
+		err := viper.WriteConfig()
+		if err != nil {
+			log.Warnf("Error Saving Config: %v", err)
 		} else {
-			source = "."
-			destination = viper.GetString("destination")
+			fmt.Printf("Set Default Destination: %v\n", destPath)
 		}
-		//fmt.Printf("source: %s\n", source)
-		//fmt.Printf("destination: %s\n", destination)
+	}
 
-		excludes := viper.GetStringSlice("excludes")
-		exclude, _ := cmd.Flags().GetStringSlice("exclude")
-		excludes = append(excludes, exclude...)
-		//exclude, _ := cmd.Flags().GetString("exclude")
-		//if exclude != "" {
-		//	parts := strings.Split(exclude, ",")
-		//	for _, part := range parts {
-		//		excludes = append(excludes, strings.TrimSpace(part))
-		//	}
-		//}
-		log.Infof("Excludes: %v", excludes)
+	// Process Excludes
+	excludes := viper.GetStringSlice("excludes")
+	exclude, _ := cmd.Flags().GetStringSlice("exclude")
+	excludes = append(excludes, exclude...)
+	log.Infof("Excludes: %v", excludes)
 
-		if destination == "" {
-			destination = promptForDestination()
-		}
+	noConfirm, _ := cmd.Flags().GetBool("yes")
+	log.Infof("Skip Confirmation: %v", noConfirm)
 
-		sourceInfo, err := os.Stat(source)
-		if err != nil || !sourceInfo.IsDir() {
-			log.Errorf("Error: inalid source: %v", source)
-			return
-		}
-		destInfo, err := os.Stat(destination)
-		if err != nil || !destInfo.IsDir() {
-			log.Errorf("Error: inalid destination: %v", destination)
-			return
-		}
+	styles.PrintKV("Source", sourcePath)
+	styles.PrintKV("Destination", destPath)
+	styles.PrintKV("Name", sourceName)
 
-		//if err := validateDirectory(source, "Source"); err != nil {
-		//	fmt.Println(err)
-		//	return
-		//}
-		//if err := validateDirectory(destination, "Destination"); err != nil {
-		//	fmt.Println(err)
-		//	return
-		//}
-
-		sourcePath, _ := filepath.Abs(source)
-		destPath, _ := filepath.Abs(destination)
-		sourceName := filepath.Base(sourcePath)
-
-		//viper.SetDefault("destination", destination)
-		//viper.WriteConfig()
-		if viper.GetString("destination") == "" {
-			viper.Set("destination", destPath)
-			err := viper.WriteConfig()
-			if err != nil {
-				log.Warnf("Error Saving Config: %v", err)
-			} else {
-				fmt.Printf("Set Default Destination: %v\n", destPath)
-			}
-		}
-
-		noConfirm, _ := cmd.Flags().GetBool("yes")
-		log.Infof("Skip Confirmation: %v", noConfirm)
-
-		fmt.Printf("Source: %s\n", sourcePath)
-		fmt.Printf("Destination: %s\n", destPath)
-		fmt.Printf("Name: %s\n", sourceName)
-
-		if !noConfirm {
-			var confirm = true
-			form := huh.NewConfirm().
-				Title("Proceed?").
-				Affirmative("Yes.").
-				Negative("No!").
-				Value(&confirm).
-				WithTheme(huh.ThemeDracula())
-			err := form.Run()
-			if err != nil {
-				fmt.Printf("prompt error: %v\n", err)
-				os.Exit(1)
-			}
-			if !confirm {
-				fmt.Printf("Operation cancelled\n")
-				os.Exit(0)
-			}
-		}
-
-		fullDestPath := filepath.Join(destPath, sourceName)
-		if err := os.MkdirAll(fullDestPath, 0755); err != nil {
-			log.Errorf("Error creating directory: %v", err)
+	if !noConfirm {
+		var confirm = true
+		form := huh.NewConfirm().
+			Title("Proceed?").
+			Affirmative("Yes.").
+			Negative("No!").
+			Value(&confirm).
+			WithTheme(huh.ThemeDracula())
+		err := form.Run()
+		if err != nil {
+			fmt.Printf("prompt error: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Directory: %s\n", fullDestPath)
-
-		// Create timestamp filename
-		timestamp := time.Now().Format("06-01-02-15-04-05") // YY-MM-DD-HH-MM-SS
-		zipFileName := timestamp + ".zip"
-		fmt.Printf("File Name: %s\n", zipFileName)
-		zipFilePath := filepath.Join(fullDestPath, zipFileName)
-		fmt.Printf("File Path: %s\n", zipFilePath)
-
-		if err := archive.CreateZipArchive(excludes, sourcePath, zipFilePath); err != nil {
-			log.Fatalf("Error creating archive: %v", err)
+		if !confirm {
+			fmt.Printf("Operation cancelled\n")
+			os.Exit(0)
 		}
+	}
 
-		copyToClipboard := viper.GetBool("clipboard")
-		log.Infof("copyToClipboard: %v", copyToClipboard)
-		if copyToClipboard {
-			if err := clipboard.Init(); err != nil {
-				log.Warnf("Clipboard not available.")
-			} else {
-				clipboard.Write(clipboard.FmtText, []byte(zipFilePath))
-			}
-		}
+	fullDestPath := filepath.Join(destPath, sourceName)
+	if err := os.MkdirAll(fullDestPath, 0755); err != nil {
+		log.Errorf("Error creating directory: %v", err)
+		os.Exit(1)
+	}
+	styles.PrintKV("Directory", fullDestPath)
 
-		fileInfo, err := os.Stat(zipFilePath)
-		if err != nil {
-			log.Warnf("Error getting archive info: %v", err)
+	// Create timestamp filename
+	timestamp := time.Now().Format("06-01-02-15-04-05") // YY-MM-DD-HH-MM-SS
+	zipFileName := timestamp + ".zip"
+	styles.PrintKV("File Name", zipFileName)
+	zipFilePath := filepath.Join(fullDestPath, zipFileName)
+	styles.PrintKV("File Path", zipFilePath)
+
+	if err := archive.CreateZipArchive(excludes, sourcePath, zipFilePath); err != nil {
+		log.Fatalf("Error creating archive: %v", err)
+	}
+
+	copyToClipboard := viper.GetBool("clipboard")
+	log.Infof("copyToClipboard: %v", copyToClipboard)
+	if copyToClipboard {
+		if err := clipboard.Init(); err != nil {
+			log.Warnf("Clipboard not available.")
 		} else {
-			fmt.Printf("Archive Size: %s\n", formatBytes(fileInfo.Size()))
+			clipboard.Write(clipboard.FmtText, []byte(zipFilePath))
 		}
+	}
 
-		fmt.Printf("Archive File: %s\nSuccess!\n", zipFilePath)
-	},
+	fileInfo, err := os.Stat(zipFilePath)
+	if err != nil {
+		log.Warnf("Error getting archive info: %v", err)
+	} else {
+		styles.PrintKV("File Size", humanize.Bytes(uint64(fileInfo.Size())))
+	}
+
+	styles.PrintS("Backup Successful", "")
 }
 
 func promptForDestination() string {
@@ -195,22 +175,4 @@ func promptForDestination() string {
 	}
 	log.Infof("absPath %q", absPath)
 	return absPath
-}
-
-func formatBytes(bytes int64) string {
-	const unit = 1024
-	if bytes < unit {
-		return fmt.Sprintf("%d B", bytes)
-	}
-	div, exp := int64(unit), 0
-	for n := bytes / unit; n >= unit; n /= unit {
-		div *= unit
-		exp++
-	}
-	return fmt.Sprintf("%.1f %cB", float64(bytes)/float64(div), "KMGTPE"[exp])
-}
-
-func init() {
-	rootCmd.AddCommand(backupCmd)
-	backupCmd.Flags().StringSliceP("exclude", "e", []string{}, "inline pattern to exclude")
 }

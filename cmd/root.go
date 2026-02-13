@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/charmbracelet/log"
+	"github.com/confluentinc/go-editor"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"os"
@@ -15,11 +16,33 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "bup",
+	Use:   "bup [source] [destination]",
 	Short: "Easily backup directories to destination with excludes.",
 	Long:  "Easily create a timestamped archive of the current directory or [source] to a [destination] or saved destination with excludes.",
-	// Consider moving backup to the top level command
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Args:  cobra.ArbitraryArgs,
+	Run: func(cmd *cobra.Command, args []string) {
+		log.Debug("rootCmd:", "args", args)
+		editFlag, _ := cmd.Flags().GetBool("edit")
+		infoFlag, _ := cmd.Flags().GetBool("info")
+		listFlag, _ := cmd.Flags().GetBool("list")
+		log.Info("Flags:", "edit", editFlag, "info", infoFlag, "list", listFlag)
+
+		switch {
+		case infoFlag:
+			infoCmd(cmd, args)
+		case listFlag:
+			listCmd(cmd, args)
+		case editFlag:
+			file := viper.ConfigFileUsed()
+			log.Infof("viper.ConfigFileUsed(): %v", file)
+			edit := editor.NewEditor()
+			if err := edit.Launch(file); err != nil {
+				log.Fatal(err)
+			}
+		default:
+			backupCmd(cmd, args)
+		}
+	},
 }
 
 func SetVersionInfo(version, commit, date string) {
@@ -35,17 +58,22 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(onInitialize)
-	rootCmd.PersistentFlags().BoolP("yes", "y", false, "answer yes to confirmations")
-	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file [default: ~/.config/bup.yaml]")
-	rootCmd.PersistentFlags().CountVarP(&verbose, "verbose", "v", "verbose output (-vvv debug)")
+	rootCmd.Flags().StringVarP(&cfgFile, "config", "c", "", "config file [default: ~/.config/bup.yaml]")
+	rootCmd.Flags().StringSliceP("exclude", "e", []string{}, "inline pattern to exclude")
+	rootCmd.Flags().CountVarP(&verbose, "verbose", "v", "verbose output (-vvv debug)")
 	rootCmd.Flags().BoolP("version", "V", false, "version for bup")
+	rootCmd.Flags().BoolP("yes", "y", false, "answer yes to confirmations")
+	// Flag Commands
+	rootCmd.Flags().BoolP("edit", "E", false, "edit config in default editor")
+	rootCmd.Flags().BoolP("info", "i", false, "information about bup")
+	rootCmd.Flags().BoolP("list", "l", false, "list backups")
 }
 
 func onInitialize() {
-	initLogger(verbose)
+	initLogger()
 	log.Info("Log Level", "verbose", verbose)
 
-	//viper.SetEnvPrefix("bup")
+	// Default Config
 	viper.SetDefault("clipboard", true)
 	viper.SetDefault("excludes", []string{
 		".*cache",
@@ -58,7 +86,7 @@ func onInitialize() {
 		"*.exe",
 	})
 
-	// Provided Config
+	// User Provided Config
 	log.Debug("onInitialize", "cfgFile", cfgFile)
 	if cfgFile != "" {
 		viper.SetConfigFile(cfgFile)
@@ -71,8 +99,10 @@ func onInitialize() {
 	}
 
 	// Find Config
+	configName := "bup"
+	viper.SetConfigName(configName)
 	viper.SetConfigType("yaml")
-	viper.SetConfigName("bup")
+	viper.SetEnvPrefix("bup")
 
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("$HOME")
@@ -84,32 +114,37 @@ func onInitialize() {
 	if err := viper.ReadInConfig(); err != nil {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
-			homeDir = "."
+			homeDir = "." // NOTE: improve fallback method
 		}
 		log.Debugf("homeDir: %v", homeDir)
 		configPath := filepath.Join(homeDir, ".config")
 		log.Debugf("configPath: %v", configPath)
-		_ = os.MkdirAll(configPath, 0755)
-		configFile := filepath.Join(configPath, "bup.yaml")
-		log.Debugf("configFile: %v", configFile)
-		viper.SetConfigFile(configFile)
-		_ = viper.SafeWriteConfigAs(configFile)
-		if err := viper.ReadInConfig(); err != nil {
-			log.Fatalf("Error reading config: %s\nUsing Default Config!", configFile)
+		if err := os.MkdirAll(configPath, 0755); err != nil {
+			log.Fatalf("Creating config directory: %v: %v", configPath, err)
 		}
+		configFile := filepath.Join(configPath, configName+".yaml")
 		log.Infof("Config File: %v", configFile)
+		viper.SetConfigFile(configFile)
+		if err := viper.SafeWriteConfigAs(configFile); err != nil {
+			// NOTE: This will error if the config file exist
+			log.Debugf("SafeWriteConfigAs: %v: %v", configFile, err)
+		}
+		if err := viper.ReadInConfig(); err != nil {
+			log.Fatalf("Reading config: %v: %v", configFile, err)
+		}
 	} else {
 		log.Infof("Config File: %v", viper.ConfigFileUsed())
 	}
 }
 
-func initLogger(verbosity int) {
-	log.SetReportCaller(verbosity >= 3)
-	log.SetReportTimestamp(verbosity >= 3)
+func initLogger() {
+	log.Debug("initLogger", "verbose", verbose)
+	log.SetReportCaller(verbose >= 3)
+	log.SetReportTimestamp(verbose >= 3)
 	log.SetTimeFormat("15:04:05")
 	//log.SetPrefix("bup")
 
-	switch verbosity {
+	switch verbose {
 	case 0:
 		log.SetLevel(log.WarnLevel) // Default
 	case 1:
