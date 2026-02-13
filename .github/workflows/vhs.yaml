@@ -66,6 +66,7 @@ jobs:
           echo inputs.publish: ${{ inputs.publish }}
 
           echo "tape=${{ env.tape-dir }}/${{ matrix.tape }}.tape" >> "$GITHUB_ENV"
+          echo "home=${HOME}" >> "$GITHUB_ENV"
 
       - name: "Install Release"
         if: ${{ github.event_name == 'workflow_call' }}
@@ -97,7 +98,7 @@ jobs:
         with:
           to-file: "bup.yaml"
           data: |
-            {"destination": "${HOME}/backup"}
+            {"destination": "${{ env.home }}/backup"}
 
       - name: "Validate Install"
         #if: ${{ !inputs.publish }}
