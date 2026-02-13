@@ -15,10 +15,10 @@ Set Height 640
 Set FontSize 24
 
 Hide
-#Type "bup --help | head -n 16 && echo '  ...'"
-Type "bup --help"
+Type "bup --help | head -n 14"
+#Type "bup --help"
 Enter
 Show
 Sleep 1.5s
 
-Source assets/main.tape
+#Source assets/main.tape

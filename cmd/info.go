@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/charmbracelet/log"
+	"github.com/smashedr/bup/internal/styles"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -10,9 +11,11 @@ import (
 func infoCmd(cmd *cobra.Command, args []string) {
 	log.Debug("infoCmd:", "args", args)
 
-	fmt.Printf("cfgFile: %s\n", cfgFile)
-	fmt.Printf("viper.ConfigFileUsed: %s\n", viper.ConfigFileUsed())
+	styles.PrintKV("Config Flag", fmt.Sprintf("%q", cfgFile))
+	styles.PrintKV("Config Used", viper.ConfigFileUsed())
+
 	destination := viper.GetString("destination")
-	fmt.Printf("destination: %s\n", destination)
-	fmt.Printf("excludes: %s\n", viper.GetStringSlice("excludes"))
+	styles.PrintKV("Destination", destination)
+
+	styles.PrintKV("Excludes", fmt.Sprintf("%v", viper.GetStringSlice("excludes")))
 }

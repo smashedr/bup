@@ -58,14 +58,15 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(onInitialize)
-	rootCmd.Flags().BoolP("yes", "y", false, "answer yes to confirmations")
-	rootCmd.Flags().StringVar(&cfgFile, "config", "", "config file [default: ~/.config/bup.yaml]")
-	rootCmd.Flags().CountVarP(&verbose, "verbose", "v", "verbose output (-vvv debug)")
+	rootCmd.Flags().StringVarP(&cfgFile, "config", "c", "", "config file [default: ~/.config/bup.yaml]")
 	rootCmd.Flags().StringSliceP("exclude", "e", []string{}, "inline pattern to exclude")
-	rootCmd.Flags().BoolP("edit", "E", false, "edit config in default editor")
-	rootCmd.Flags().BoolP("info", "I", false, "information about bup")
-	rootCmd.Flags().BoolP("list", "l", false, "list backups")
+	rootCmd.Flags().CountVarP(&verbose, "verbose", "v", "verbose output (-vvv debug)")
 	rootCmd.Flags().BoolP("version", "V", false, "version for bup")
+	rootCmd.Flags().BoolP("yes", "y", false, "answer yes to confirmations")
+	// Flag Commands
+	rootCmd.Flags().BoolP("edit", "E", false, "edit config in default editor")
+	rootCmd.Flags().BoolP("info", "i", false, "information about bup")
+	rootCmd.Flags().BoolP("list", "l", false, "list backups")
 }
 
 func onInitialize() {

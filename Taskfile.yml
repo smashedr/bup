@@ -58,7 +58,7 @@ tasks:
       TARGET_NAME: bup
     cmd: |
       go build
-      mv {{.TARGET_NAME}} "${HOME}/bin/{{.TARGET_NAME}}"
+      mv -f {{.TARGET_NAME}} "${HOME}/bin/{{.TARGET_NAME}}"
       which {{.TARGET_NAME}}
       {{.TARGET_NAME}} -V
 
