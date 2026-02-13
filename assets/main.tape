@@ -29,7 +29,7 @@ Type "bup --info"
 Sleep 0.5s
 Enter
 Wait
-Sleep 1.5s
+Sleep 2s
 
 Type "clear"
 Sleep 0.3s
