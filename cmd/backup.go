@@ -60,7 +60,7 @@ func backupCmd(cmd *cobra.Command, args []string) {
 		if err != nil {
 			log.Warnf("Error Saving Config: %v", err)
 		} else {
-			styles.PrintS("Default Destination Saved", destPath)
+			styles.PrintKV("Saved Dest", destPath)
 		}
 	}
 
@@ -130,7 +130,7 @@ func backupCmd(cmd *cobra.Command, args []string) {
 		styles.PrintKV("File Size", humanize.Bytes(uint64(fileInfo.Size())))
 	}
 
-	styles.PrintS("Backup Successful", "")
+	fmt.Println(styles.Success.Render("Backup Successful"))
 }
 
 func promptForDestination() string {
