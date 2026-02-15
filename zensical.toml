@@ -1,6 +1,6 @@
 [project]
-site_name = "Back UP"
-site_description = "Back UP CLI written in Go."
+site_name = "BackUP"
+site_description = "BackUP CLI written in Go."
 site_author = "Shane"
 repo_name = "smashedr/bup"
 repo_url = "https://github.com/smashedr/bup"
@@ -9,7 +9,7 @@ edit_uri = "blob/master/docs/"
 site_url = "https://smashedr.github.io/bup/"
 # https://zensical.org/docs/setup/basics/#copyright
 copyright = """
-<a href="https://github.com/smashedr/bup">Back UP CLI</a>
+<a href="https://github.com/smashedr/bup">BackUP CLI</a>
 <br>
 Built with <a href="https://github.com/zensical/zensical">Zensical</a>
 """

@@ -4,7 +4,7 @@ icon: lucide/rocket
 
 # :lucide-rocket: Get Started
 
-[![Back UP](assets/images/logo.png){ align=right width=96 }](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
+[![BackUP](assets/images/logo.png){ align=right width=96 }](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 
 [![GitHub Release Version](https://img.shields.io/github/v/release/smashedr/bup?logo=github)](https://github.com/smashedr/bup/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/smashedr/bup/total?logo=rolldown&logoColor=white)](https://github.com/smashedr/bup/releases/latest)
@@ -21,7 +21,7 @@ icon: lucide/rocket
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
-Back UP `bup` CLI written in Go.
+BackUP `bup` CLI written in Go.
 
 Creates an archive of the `source` directory and puts it in the `destination` directory
 in a sub-folder with the `name` of the `source` directory and a timestamped filename.

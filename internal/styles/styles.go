@@ -47,12 +47,13 @@ var TableRow = lipgloss.NewStyle().
 	Foreground(lipgloss.Color("#F8F8F8")).
 	PaddingLeft(1).PaddingRight(1)
 
-func PrintS(key, format string, args ...interface{}) {
-	fmt.Println(Success.Render(key) + " " + fmt.Sprintf(format, args...))
-}
-func PrintF(key, format string, args ...interface{}) {
-	fmt.Println(Failure.Render(key) + " " + fmt.Sprintf(format, args...))
-}
+//func PrintS(key, format string, args ...interface{}) {
+//	fmt.Println(Success.Render(key) + " " + fmt.Sprintf(format, args...))
+//}
+//func PrintF(key, format string, args ...interface{}) {
+//	fmt.Println(Failure.Render(key) + " " + fmt.Sprintf(format, args...))
+//}
+
 func PrintKV(key, value string) {
 	fmt.Println(Key.Render(key) + " " + Value.Render(value))
 }

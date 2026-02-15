@@ -100,8 +100,9 @@ func onInitialize() {
 
 	// Find Config
 	configName := "bup"
+	configType := "yaml"
 	viper.SetConfigName(configName)
-	viper.SetConfigType("yaml")
+	viper.SetConfigType(configType)
 	viper.SetEnvPrefix("bup")
 
 	viper.AddConfigPath(".")
@@ -114,6 +115,7 @@ func onInitialize() {
 	if err := viper.ReadInConfig(); err != nil {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
+			log.Warnf("os.UserHomeDir err: %v", err)
 			homeDir = "." // NOTE: improve fallback method
 		}
 		log.Debugf("homeDir: %v", homeDir)
@@ -122,7 +124,7 @@ func onInitialize() {
 		if err := os.MkdirAll(configPath, 0755); err != nil {
 			log.Fatalf("Creating config directory: %v: %v", configPath, err)
 		}
-		configFile := filepath.Join(configPath, configName+".yaml")
+		configFile := filepath.Join(configPath, fmt.Sprintf("%s.%s", configName, configType))
 		log.Infof("Config File: %v", configFile)
 		viper.SetConfigFile(configFile)
 		if err := viper.SafeWriteConfigAs(configFile); err != nil {

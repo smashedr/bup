@@ -3,8 +3,7 @@
 Type "bup ."
 Sleep 0.5s
 Enter
-# NOTE: This is wrong but works locally and on actions
-Wait /./
+Wait /Yes/
 Sleep 1s
 Right
 Sleep 0.4s
