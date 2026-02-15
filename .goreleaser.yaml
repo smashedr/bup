@@ -41,7 +41,7 @@ brews:
     skip_upload: true
     directory: Formula
     homepage: "https://smashedr.github.io/{{ .ProjectName }}"
-    description: "Back UP CLI written in Go"
+    description: "BackUP CLI written in Go"
     license: "MIT"
     test: |
       assert_match version.to_s, shell_output("#{bin}/bup -V")
@@ -57,7 +57,7 @@ brews:
 #      - "{{ if .Prerelease }}prerelease{{ else }}latest{{ end }}"
 #      - "{{ .Version }}"
 #    labels:
-#      "org.opencontainers.image.description": "Back UP CLI written in Go."
+#      "org.opencontainers.image.description": "BackUP CLI written in Go."
 #      "org.opencontainers.image.created": "{{ .Date }}"
 #      "org.opencontainers.image.name": "{{ .ProjectName }}"
 #      "org.opencontainers.image.title": "{{ .ProjectName }}"

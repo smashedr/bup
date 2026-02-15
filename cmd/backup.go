@@ -60,7 +60,7 @@ func backupCmd(cmd *cobra.Command, args []string) {
 		if err != nil {
 			log.Warnf("Error Saving Config: %v", err)
 		} else {
-			fmt.Printf("Set Default Destination: %v\n", destPath)
+			styles.PrintS("Default Destination Saved", destPath)
 		}
 	}
 
@@ -87,12 +87,11 @@ func backupCmd(cmd *cobra.Command, args []string) {
 			WithTheme(huh.ThemeDracula())
 		err := form.Run()
 		if err != nil {
-			fmt.Printf("prompt error: %v\n", err)
-			os.Exit(1)
+			log.Fatalf("prompt error: %v", err)
 		}
 		if !confirm {
-			fmt.Printf("Operation cancelled\n")
-			os.Exit(0)
+			log.Warnf("Operation Cancelled.")
+			return
 		}
 	}
 

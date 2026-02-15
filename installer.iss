@@ -6,6 +6,7 @@
   #define MyAppVersion "0.0.1"
 #endif
 #define MyAppFileName "bup"
+#define MyDefaultDirName "bup"
 
 [Setup]
 AppId={{5A1C755C-43D6-4445-BFC9-ABF23CEEF33E}
@@ -18,7 +19,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 ;Compression=lzma
 ;SolidCompression=yes
-DefaultDirName={autopf}\{#MyAppName}
+DefaultDirName={autopf}\{#MyDefaultDirName}
 DefaultGroupName={#MyAppName}
 ;DisableDirPage=yes
 ;DisableProgramGroupPage=yes

@@ -4,7 +4,7 @@ icon: lucide/message-circle-question-mark
 
 # :lucide-message-circle-question-mark: Support
 
-[![Back UP](assets/images/logo.png){ align=right width=96 }](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
+[![BackUP](assets/images/logo.png){ align=right width=96 }](https://github.com/smashedr/bup?tab=readme-ov-file#readme)
 
 [![Features](https://img.shields.io/badge/features-brightgreen?style=for-the-badge&logo=rocket&logoColor=white)](https://github.com/smashedr/bup/issues/new?template=1-feature.yaml)
 [![Issues](https://img.shields.io/badge/issues-red?style=for-the-badge&logo=southwestairlines&logoColor=white)](https://github.com/smashedr/bup/issues)

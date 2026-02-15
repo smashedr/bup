@@ -17,7 +17,7 @@
 [![Discord](https://img.shields.io/discord/899171661457293343?logo=discord&logoColor=white&label=discord&color=7289da)](https://discord.gg/wXy6m2X8wY)
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-72a5f2?logo=kofi&label=support)](https://ko-fi.com/cssnr)
 
-# Back UP
+# BackUP
 
 [![Homebrew](https://img.shields.io/badge/homebrew-gray?style=flat-square&logo=homebrew)](#homebrew)
 [![Bash](https://img.shields.io/badge/bash-gray?style=flat-square&logo=stackedit&logoColor=white)](#bash)
@@ -35,7 +35,7 @@
 - [Support](#Support)
 - [Contributing](#contributing)
 
-Back UP `bup` CLI written in Go.
+BackUP `bup` CLI written in Go.
 
 Creates an archive of the `source` directory and puts it in the `destination` directory
 in a sub-folder with the `name` of the `source` directory and a timestamped filename.
