@@ -88,7 +88,7 @@ tasks:
 
   gen-config:
     desc: Generate Config File
-    if: test ! -f bup.yaml
+    status: [test -f bup.yaml]
     cmd: |
       rm -rf "$HOME/backup/bup"
       mkdir -p "$HOME/backup"
