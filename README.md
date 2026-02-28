@@ -88,7 +88,7 @@ docker run --rm -itv ~/bin:/out ghcr.io/smashedr/ir:latest -b /out smashedr/bup
 
 _Note: Docker requires you to mount the target bin directory._
 
-[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=quicklook)](https://smashedr.github.io/bup/)
 
 ## Usage
 
@@ -116,7 +116,7 @@ Use `--edit` to open the config in an editor.
 bup -e
 ```
 
-[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=quicklook)](https://smashedr.github.io/bup/)
 
 # Development
 
