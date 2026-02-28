@@ -62,8 +62,8 @@ If you run into any issues or have any questions, [support](support.md) is avail
 
 --8<-- "docs/snippets/install.md"
 
-[![Latest Release](https://img.shields.io/github/v/release/smashedr/bup?style=for-the-badge&logo=github&label=latest%20version)](https://github.com/smashedr/bup/releases/latest)
-[![Latest Pre-Release](https://img.shields.io/github/v/release/smashedr/bup?style=for-the-badge&logo=github&include_prereleases&label=pre-release)](https://github.com/smashedr/bup/releases)
+[![Latest Release](https://img.shields.io/github/v/release/smashedr/bup?style=for-the-badge&logo=github&label=latest%20version&color=blue)](https://github.com/smashedr/bup/releases/latest)
+[![Latest Pre-Release](https://img.shields.io/github/v/release/smashedr/bup?style=for-the-badge&logo=github&include_prereleases&label=pre-release&color=orange)](https://github.com/smashedr/bup/releases)
 
 ## :lucide-square-terminal: Usage
 

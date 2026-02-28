@@ -28,7 +28,7 @@
 [![Windows Installer](https://img.shields.io/badge/windows_installer-gray?style=flat-square&logo=data:image/svg%2bxml;base64,PHN2ZyB3aWR0aD0iMjQ5MCIgaGVpZ2h0PSIyNTAwIiB2aWV3Qm94PSIwIDAgMjU2IDI1NyIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCI+PHBhdGggZD0iTTAgMzYuMzU3TDEwNC42MiAyMi4xMWwuMDQ1IDEwMC45MTQtMTA0LjU3LjU5NUwwIDM2LjM1OHptMTA0LjU3IDk4LjI5M2wuMDggMTAxLjAwMkwuMDgxIDIyMS4yNzVsLS4wMDYtODcuMzAyIDEwNC40OTQuNjc3em0xMi42ODItMTE0LjQwNUwyNTUuOTY4IDB2MTIxLjc0bC0xMzguNzE2IDEuMVYyMC4yNDZ6TTI1NiAxMzUuNmwtLjAzMyAxMjEuMTkxLTEzOC43MTYtMTkuNTc4LS4xOTQtMTAxLjg0TDI1NiAxMzUuNnoiIGZpbGw9IiMwMEFERUYiLz48L3N2Zz4=)](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe)
 
 <a title="BackUP" href="https://smashedr.github.io/bup/" target="_blank">
-<img alt="BackUP" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/smashedr/bup/refs/heads/master/docs/assets/images/logo.png"></a>
+<img alt="BackUP" align="right" width="128" height="auto" src="https://raw.githubusercontent.com/smashedr/bup/master/docs/assets/images/logo.png"></a>
 
 - [Install](#install)
 - [Usage](#usage)
@@ -61,7 +61,7 @@ brew install cssnr/tap/bup
 #### Bash
 
 ```shell
-curl https://i.jpillora.com/smashedr/bup! | bash
+curl 'https://raw.githubusercontent.com/smashedr/bup/master/scripts/install.sh' | bash
 ```
 
 💾 Alternatively, you can manually [download a release](https://github.com/smashedr/bup/releases).
@@ -69,7 +69,7 @@ curl https://i.jpillora.com/smashedr/bup! | bash
 #### PowerShell
 
 ```powershell
-iex (iwr -useb 'https://raw.githubusercontent.com/smashedr/bup/refs/heads/master/scripts/install.ps1').Content
+iex (iwr -useb 'https://raw.githubusercontent.com/smashedr/bup/master/scripts/install.ps1').Content
 ```
 
 🪟 Windows users can download the [Windows Installer.exe](https://github.com/smashedr/bup/releases/latest/download/bup_Windows_Installer.exe).
@@ -88,7 +88,7 @@ docker run --rm -itv ~/bin:/out ghcr.io/smashedr/ir:latest -b /out smashedr/bup
 
 _Note: Docker requires you to mount the target bin directory._
 
-[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=quicklook)](https://smashedr.github.io/bup/)
 
 ## Usage
 
@@ -116,7 +116,7 @@ Use `--edit` to open the config in an editor.
 bup -e
 ```
 
-[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=googledocs&logoColor=white)](https://smashedr.github.io/bup/)
+[![View Documentation](https://img.shields.io/badge/view_documentation-blue?style=for-the-badge&logo=quicklook)](https://smashedr.github.io/bup/)
 
 # Development
 
